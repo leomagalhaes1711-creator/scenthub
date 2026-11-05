@@ -35,3 +35,7 @@ export async function searchPerfumes(query?: string): Promise<Perfume[]> {
     normalize(`${perfume.name} ${perfume.brand}`).includes(term),
   );
 }
+// Devolve um perfume pelo seu id, ou null se não existir
+export async function getPerfumeById(id: string): Promise<Perfume | null> {
+  return perfumes.find((perfume) => perfume.id === id) ?? null;
+}
