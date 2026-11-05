@@ -1,0 +1,27 @@
+import type { Note } from "@/types/note";
+
+export const notes: Note[] = [
+  { id: "bergamota", name: "Bergamota", category: "Cítrico", imageUrl: null },
+  { id: "limao", name: "Limão", category: "Cítrico", imageUrl: null },
+  { id: "pimenta", name: "Pimenta", category: "Especiado", imageUrl: null },
+  { id: "cardamomo", name: "Cardamomo", category: "Especiado", imageUrl: null },
+  { id: "lavanda", name: "Lavanda", category: "Aromático", imageUrl: null },
+  { id: "salva", name: "Salva", category: "Aromático", imageUrl: null },
+  { id: "rosa", name: "Rosa", category: "Floral", imageUrl: null },
+  { id: "peonia", name: "Peónia", category: "Floral", imageUrl: null },
+  { id: "jasmim", name: "Jasmim", category: "Floral", imageUrl: null },
+  { id: "geranio", name: "Gerânio", category: "Floral", imageUrl: null },
+  { id: "cedro", name: "Cedro", category: "Amadeirado", imageUrl: null },
+  { id: "vetiver", name: "Vetiver", category: "Amadeirado", imageUrl: null },
+  { id: "sandalo", name: "Sândalo", category: "Amadeirado", imageUrl: null },
+  { id: "baunilha", name: "Baunilha", category: "Doce", imageUrl: null },
+  { id: "caramelo", name: "Caramelo", category: "Doce", imageUrl: null },
+  { id: "ambar", name: "Âmbar", category: "Âmbar", imageUrl: null },
+  { id: "ambroxan", name: "Ambroxan", category: "Âmbar", imageUrl: null },
+  { id: "incenso", name: "Incenso", category: "Fumado", imageUrl: null },
+  { id: "couro", name: "Couro", category: "Fumado", imageUrl: null },
+  { id: "sal-marinho", name: "Sal marinho", category: "Aquático", imageUrl: null },
+  { id: "algas", name: "Algas", category: "Aquático", imageUrl: null },
+  { id: "folha-verde", name: "Folha verde", category: "Verde", imageUrl: null },
+  { id: "musgo", name: "Musgo", category: "Verde", imageUrl: null },
+];

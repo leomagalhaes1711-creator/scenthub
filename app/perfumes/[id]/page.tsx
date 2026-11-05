@@ -2,7 +2,9 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BottleIcon from "@/components/perfume/BottleIcon";
+import PerfumeNotes from "@/components/perfume/PerfumeNotes";
 import RatingStars from "@/components/reviews/RatingStars";
+import { getNotesByPerfumeId } from "@/lib/queries/notes";
 import { getPerfumeById } from "@/lib/queries/perfumes";
 
 type PerfumePageProps = {
@@ -30,6 +32,8 @@ async function PerfumeContent({ params }: PerfumePageProps) {
   if (!perfume) {
     notFound();
   }
+
+  const notes = await getNotesByPerfumeId(perfume.id);
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
@@ -87,6 +91,13 @@ async function PerfumeContent({ params }: PerfumePageProps) {
           </p>
         </div>
       </div>
+
+      <section className="mt-20">
+        <h2 className="text-center font-serif text-3xl font-semibold text-ink md:text-4xl">
+          Pirâmide olfativa
+        </h2>
+        <PerfumeNotes notes={notes} />
+      </section>
     </main>
   );
 }
