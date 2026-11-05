@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
-export default function SearchBar() {
+export default function SearchBar({ defaultValue = "" }: { defaultValue?: string }) {
   const router = useRouter();
-  const [query, setQuery] = useState("");
+    const [query, setQuery] = useState(defaultValue);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

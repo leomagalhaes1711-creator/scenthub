@@ -1,33 +1,67 @@
-import PerfumeSection from "@/components/perfume/PerfumeSection";
+import { Suspense } from "react";
+import Link from "next/link";
+import PerfumeCard from "@/components/perfume/PerfumeCard";
 import SearchBar from "@/components/ui/SearchBar";
-import {
-  getPopularPerfumes,
-  getTopRatedPerfumes,
-} from "@/lib/queries/perfumes";
+import { searchPerfumes } from "@/lib/queries/perfumes";
 
-export default async function Home() {
-  const [popular, topRated] = await Promise.all([
-    getPopularPerfumes(),
-    getTopRatedPerfumes(),
-  ]);
+type PerfumesPageProps = {
+  searchParams: Promise<{ q?: string }>;
+};
+
+export default function PerfumesPage({ searchParams }: PerfumesPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <p className="px-6 py-20 text-center text-muted">
+          A carregar perfumes...
+        </p>
+      }
+    >
+      <PerfumesContent searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+async function PerfumesContent({ searchParams }: PerfumesPageProps) {
+  const { q } = await searchParams;
+  const results = await searchPerfumes(q);
 
   return (
-    <main>
-      <section className="flex flex-col items-center gap-6 px-6 py-20 text-center md:py-28">
-        <p className="text-sm uppercase tracking-[0.3em] text-amber">
-          A sua jornada olfativa
-        </p>
-        <h1 className="max-w-3xl font-serif text-5xl font-semibold leading-tight text-ink md:text-7xl">
-          Descubra o seu próximo perfume
-        </h1>
-        <p className="max-w-xl text-muted">
-          Explore notas, leia opiniões da comunidade e guarde os seus favoritos.
-        </p>
-        <SearchBar />
-      </section>
+    <main className="mx-auto max-w-6xl px-6 py-12">
+      <h1 className="font-serif text-4xl font-semibold text-ink md:text-5xl">
+        {q ? `Resultados para "${q}"` : "Todos os perfumes"}
+      </h1>
+      <p className="mt-2 text-muted">
+        {results.length}{" "}
+        {results.length === 1 ? "perfume encontrado" : "perfumes encontrados"}
+      </p>
 
-      <PerfumeSection title="Perfumes populares" perfumes={popular} />
-      <PerfumeSection title="Mais bem avaliados" perfumes={topRated} />
+      <div className="mt-6">
+        <SearchBar defaultValue={q ?? ""} />
+      </div>
+
+      {results.length > 0 ? (
+        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {results.map((perfume) => (
+            <PerfumeCard key={perfume.id} perfume={perfume} />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-16 text-center">
+          <p className="font-serif text-2xl text-ink">
+            Nenhum perfume encontrado
+          </p>
+          <p className="mt-2 text-muted">
+            Experimente outro nome ou marca.
+          </p>
+          <Link
+            href="/perfumes"
+            className="mt-6 inline-block rounded-full bg-amber px-6 py-2.5 text-sm font-medium text-cream transition hover:bg-amber-dark"
+          >
+            Ver todos os perfumes
+          </Link>
+        </div>
+      )}
     </main>
   );
 }
