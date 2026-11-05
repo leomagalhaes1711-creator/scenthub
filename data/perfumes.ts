@@ -87,6 +87,6 @@ export const perfumes: Perfume[] = [
     perfumer: "Luca Bellini",
     description: "Um perfume marcante, com couro, incenso e notas fumadas.",
     ratingAverage: 4.2,
-    ratingCount: 731,
+    ratingCount: 1520,
   },
 ];
