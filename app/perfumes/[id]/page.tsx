@@ -57,15 +57,21 @@ async function PerfumeContent({ params }: PerfumePageProps) {
             {perfume.name}
           </h1>
 
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <RatingStars value={perfume.ratingAverage} />
-            <span className="text-lg font-medium text-ink">
-              {perfume.ratingAverage.toFixed(1)} / 5
-            </span>
-            <span className="text-sm text-muted">
-              · {perfume.ratingCount.toLocaleString("pt-PT")} avaliações
-            </span>
-          </div>
+          {perfume.ratingCount > 0 ? (
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <RatingStars value={perfume.ratingAverage} />
+              <span className="text-lg font-medium text-ink">
+                {perfume.ratingAverage.toFixed(1)} / 5
+              </span>
+              <span className="text-sm text-muted">
+                · {perfume.ratingCount.toLocaleString("pt-PT")} avaliações
+              </span>
+            </div>
+          ) : (
+            <p className="mt-5 text-sm text-muted">
+              Ainda sem avaliações. Seja o primeiro a avaliar este perfume.
+            </p>
+          )}
 
           <dl className="mt-8 grid grid-cols-2 gap-6 border-y border-ink/10 py-6">
             <div>
@@ -73,7 +79,7 @@ async function PerfumeContent({ params }: PerfumePageProps) {
                 Ano de lançamento
               </dt>
               <dd className="mt-1 font-serif text-2xl text-ink">
-                {perfume.releaseYear}
+                {perfume.releaseYear ?? "Não disponível"}
               </dd>
             </div>
             <div>

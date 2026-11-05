@@ -6,12 +6,14 @@ type PerfumeSectionProps = {
   title: string;
   perfumes: Perfume[];
   href?: string;
+  emptyMessage?: string;
 };
 
 export default function PerfumeSection({
   title,
   perfumes,
   href = "/perfumes",
+  emptyMessage = "Ainda não há perfumes para mostrar.",
 }: PerfumeSectionProps) {
   return (
     <section className="mx-auto max-w-6xl px-6 py-12">
@@ -25,11 +27,17 @@ export default function PerfumeSection({
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {perfumes.map((perfume) => (
-          <PerfumeCard key={perfume.id} perfume={perfume} />
-        ))}
-      </div>
+      {perfumes.length > 0 ? (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {perfumes.map((perfume) => (
+            <PerfumeCard key={perfume.id} perfume={perfume} />
+          ))}
+        </div>
+      ) : (
+        <p className="rounded-2xl border border-dashed border-ink/20 px-6 py-10 text-center text-muted">
+          {emptyMessage}
+        </p>
+      )}
     </section>
   );
 }

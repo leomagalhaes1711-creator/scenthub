@@ -27,7 +27,11 @@ export default async function Home() {
       </section>
 
       <PerfumeSection title="Perfumes populares" perfumes={popular} />
-      <PerfumeSection title="Mais bem avaliados" perfumes={topRated} />
+            <PerfumeSection
+        title="Mais bem avaliados"
+        perfumes={topRated}
+        emptyMessage="Ainda ninguém avaliou perfumes. Quando as avaliações chegarem, os melhores aparecem aqui."
+      />
     </main>
   );
 }

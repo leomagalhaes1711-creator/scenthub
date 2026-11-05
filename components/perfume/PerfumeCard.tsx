@@ -21,11 +21,17 @@ export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
           {perfume.name}
         </h3>
         <div className="flex items-center gap-2 pt-1">
-          <RatingStars value={perfume.ratingAverage} size="sm" />
-          <span className="text-sm text-muted">
-            {perfume.ratingAverage.toFixed(1)} (
-            {perfume.ratingCount.toLocaleString("pt-PT")})
-          </span>
+          {perfume.ratingCount > 0 ? (
+            <>
+              <RatingStars value={perfume.ratingAverage} size="sm" />
+              <span className="text-sm text-muted">
+                {perfume.ratingAverage.toFixed(1)} (
+                {perfume.ratingCount.toLocaleString("pt-PT")})
+              </span>
+            </>
+          ) : (
+            <span className="text-sm text-muted">Sem avaliações</span>
+          )}
         </div>
       </div>
     </Link>

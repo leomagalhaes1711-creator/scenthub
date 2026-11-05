@@ -3,7 +3,7 @@ export interface Perfume {
   name: string;
   brand: string;
   imageUrl: string | null; // null = usa o frasco provisório
-  releaseYear: number;
+  releaseYear: number | null;
   perfumer: string | null;
   description: string;
   ratingAverage: number;
