@@ -3,6 +3,8 @@
 :root {
   --background: #faf5ec;
   --foreground: #1f1a17;
+  --gradient-from: #faf5ec;
+  --gradient-to: #f5bf82;
 }
 
 @theme inline {
@@ -20,6 +22,12 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image: linear-gradient(
+    180deg,
+    var(--gradient-from),
+    var(--gradient-to)
+  );
+  background-attachment: fixed;
   color: var(--foreground);
 }
