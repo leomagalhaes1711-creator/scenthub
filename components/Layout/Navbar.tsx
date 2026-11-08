@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import AuthLinks from "@/components/layout/AuthLinks";
 import BottleIcon from "@/components/perfume/BottleIcon";
+import { createClient } from "@/lib/supabase/client";
 
 const links = [
   { href: "/perfumes", label: "Perfumes" },
@@ -10,7 +14,32 @@ const links = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [authReady, setAuthReady] = useState(false);
+
+  // Acompanha o estado da sessão (entrar, sair, sessão renovada)
+  useEffect(() => {
+    const supabase = createClient();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setAuthReady(true);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setOpen(false);
+    router.push("/");
+    router.refresh();
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink/10 bg-cream/90 backdrop-blur">
@@ -37,18 +66,12 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/login"
-            className="text-sm font-medium text-ink transition hover:text-amber"
-          >
-            Entrar
-          </Link>
-          <Link
-            href="/register"
-            className="rounded-full bg-amber px-5 py-2 text-sm font-medium text-cream transition hover:bg-amber-dark"
-          >
-            Criar conta
-          </Link>
+          <AuthLinks
+            user={user}
+            ready={authReady}
+            onNavigate={() => setOpen(false)}
+            onLogout={handleLogout}
+          />
         </div>
 
         {/* Botão do menu para telemóvel */}
@@ -76,20 +99,13 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/login"
-            onClick={() => setOpen(false)}
-            className="text-base font-medium text-ink"
-          >
-            Entrar
-          </Link>
-          <Link
-            href="/register"
-            onClick={() => setOpen(false)}
-            className="rounded-full bg-amber px-5 py-2.5 text-center text-sm font-medium text-cream"
-          >
-            Criar conta
-          </Link>
+          <AuthLinks
+            mobile
+            user={user}
+            ready={authReady}
+            onNavigate={() => setOpen(false)}
+            onLogout={handleLogout}
+          />
         </div>
       )}
     </header>
