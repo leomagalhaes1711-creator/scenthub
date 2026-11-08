@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import AuthLinks from "@/components/layout/AuthLinks";
+import AuthLinks from "@/components/Layout/AuthLinks";
 import BottleIcon from "@/components/perfume/BottleIcon";
 import { createClient } from "@/lib/supabase/client";
 
