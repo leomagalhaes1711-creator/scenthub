@@ -44,7 +44,7 @@ export default function LoginForm() {
         required
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        placeholder="o.teu@email.com"
+        placeholder="email"
       />
       <TextField
         id="password"

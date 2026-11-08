@@ -87,13 +87,13 @@ export default function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <TextField
-        id="username"
-        label="Username"
-        autoComplete="username"
+        id="usuario"
+        label="Usuário"
+        autoComplete="usuario"
         required
-        value={username}
+        value={usuario}
         onChange={(event) => setUsername(event.target.value)}
-        placeholder="o_seu_username"
+        placeholder="Usuário"
         hint="3 a 20 caracteres: letras, números ou _"
       />
       <TextField
@@ -104,17 +104,17 @@ export default function RegisterForm() {
         required
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        placeholder="o.seu@email.com"
+        placeholder="Email"
       />
       <TextField
         id="password"
-        label="Palavra-passe"
+        label="Senha"
         type="password"
         autoComplete="new-password"
         required
         value={password}
         onChange={(event) => setPassword(event.target.value)}
-        placeholder="********"
+        placeholder="Senha"
         hint="Pelo menos 8 caracteres"
       />
 
