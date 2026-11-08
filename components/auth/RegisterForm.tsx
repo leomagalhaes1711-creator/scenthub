@@ -84,14 +84,14 @@ export default function RegisterForm() {
     router.refresh();
   }
 
-  return (
+   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <TextField
-        id="usuario"
+        id="username"
         label="Usuário"
-        autoComplete="usuario"
+        autoComplete="username"
         required
-        value={usuario}
+        value={username}
         onChange={(event) => setUsername(event.target.value)}
         placeholder="Usuário"
         hint="3 a 20 caracteres: letras, números ou _"
@@ -141,8 +141,7 @@ export default function RegisterForm() {
         disabled={loading}
         className="w-full rounded-full bg-amber px-6 py-3 text-sm font-medium text-cream transition hover:bg-amber-dark disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "A criar conta..." : "Criar conta"}
+        {loading ? "Criando conta..." : "Criar conta"}
       </button>
     </form>
   );
-}
