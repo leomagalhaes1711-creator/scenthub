@@ -38,7 +38,7 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <TextField
         id="email"
-        label="Email"
+        label="email"
         type="email"
         autoComplete="email"
         required
@@ -48,12 +48,13 @@ export default function LoginForm() {
       />
       <TextField
         id="password"
-        label="Palavra-passe"
+        label="Senha"
         type="password"
         autoComplete="current-password"
         required
         value={password}
         onChange={(event) => setPassword(event.target.value)}
+        placeholder="senha"
       />
 
       {error && (
