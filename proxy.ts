@@ -1,7 +1,47 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Corre antes de cada pedido e renova a sessão do utilizador, se for preciso.
+// Páginas que exigem sessão iniciada
+const PROTECTED_PATHS = ["/profile", "/favorites"];
+
+// Páginas que não fazem sentido para quem já tem sessão
+const AUTH_PATHS = ["/login", "/register"];
+
+function matches(pathname: string, paths: string[]) {
+  return paths.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
+}
+
+// Cria um redirecionamento sem perder os cookies de sessão renovados
+function redirectTo(
+  request: NextRequest,
+  response: NextResponse,
+  pathname: string,
+  next?: string,
+) {
+  const url = request.nextUrl.clone();
+  url.pathname = pathname;
+  url.search = "";
+
+  if (next) {
+    url.searchParams.set("next", next);
+  }
+
+  const redirect = NextResponse.redirect(url);
+
+  response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+
+  // Respostas personalizadas nunca devem ficar em cache
+  redirect.headers.set(
+    "Cache-Control",
+    "private, no-cache, no-store, max-age=0, must-revalidate",
+  );
+
+  return redirect;
+}
+
+// Corre antes de cada pedido: renova a sessão e protege as páginas.
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -35,7 +75,17 @@ export async function proxy(request: NextRequest) {
 
   // Valida e, se necessário, renova a sessão.
   // Não coloques código entre a criação do cliente e esta linha.
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+  const isLoggedIn = Boolean(data?.claims);
+  const { pathname } = request.nextUrl;
+
+  if (!isLoggedIn && matches(pathname, PROTECTED_PATHS)) {
+    return redirectTo(request, response, "/login", pathname);
+  }
+
+  if (isLoggedIn && matches(pathname, AUTH_PATHS)) {
+    return redirectTo(request, response, "/");
+  }
 
   return response;
 }

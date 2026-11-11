@@ -1,13 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import TextField from "@/components/ui/TextField";
 import { translateAuthError } from "@/lib/auth/errors";
 import { createClient } from "@/lib/supabase/client";
 
+// Só aceita caminhos dentro do nosso site (evita redirecionar para sites externos)
+function getSafeRedirect(next: string | null): string {
+  if (next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\")) {
+    return next;
+  }
+  return "/";
+}
+
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +39,7 @@ export default function LoginForm() {
       return;
     }
 
-    router.push("/");
+    router.push(getSafeRedirect(searchParams.get("next")));
     router.refresh();
   }
 
@@ -38,13 +47,13 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <TextField
         id="email"
-        label="email"
+        label="Email"
         type="email"
         autoComplete="email"
         required
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        placeholder="email"
+        placeholder="Email"
       />
       <TextField
         id="password"
@@ -54,7 +63,7 @@ export default function LoginForm() {
         required
         value={password}
         onChange={(event) => setPassword(event.target.value)}
-        placeholder="senha"
+        placeholder="Senha"
       />
 
       {error && (
@@ -71,7 +80,7 @@ export default function LoginForm() {
         disabled={loading}
         className="w-full rounded-full bg-amber px-6 py-3 text-sm font-medium text-cream transition hover:bg-amber-dark disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "A entrar..." : "Entrar"}
+        {loading ? "Entrando..." : "Entrar"}
       </button>
     </form>
   );

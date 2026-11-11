@@ -5,8 +5,8 @@ import { useState, type FormEvent } from "react";
 import TextField from "@/components/ui/TextField";
 import { translateAuthError } from "@/lib/auth/errors";
 import { createClient } from "@/lib/supabase/client";
+import { USERNAME_PATTERN } from "@/lib/auth/validation";
 
-const USERNAME_PATTERN = /^[A-Za-z0-9_]{3,20}$/;
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -98,13 +98,13 @@ export default function RegisterForm() {
       />
       <TextField
         id="email"
-        label="Email"
+        label="email"
         type="email"
         autoComplete="email"
         required
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        placeholder="Email"
+        placeholder="email"
       />
       <TextField
         id="password"
