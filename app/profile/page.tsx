@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import ProfileForm from "@/components/profile/ProfileForm";
+import ProfileForm from "@/components/profile/profile-form";
 import { requireUser } from "@/lib/auth/require-user";
 
 export default function ProfilePage() {

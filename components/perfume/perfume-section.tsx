@@ -1,5 +1,5 @@
 import Link from "next/link";
-import PerfumeCard from "@/components/perfume/PerfumeCard";
+import PerfumeCard from "@/components/perfume/perfume-card";
 import type { Perfume } from "@/types/perfume";
 
 type PerfumeSectionProps = {

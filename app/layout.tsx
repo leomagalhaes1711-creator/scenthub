@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
-import Navbar from "@/components/Layout/Navbar";
-import Footer from "@/components/Layout/Footer";
+import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
+import Navbar from "@/components/site-layout/navbar";
+import Footer from "@/components/site-layout/footer";
 import "./globals.css";
 
-const inter = Inter({
+const instrument = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-instrument",
 });
 
-const cormorant = Cormorant_Garamond({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-cormorant",
+  variable: "--font-bricolage",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <body
-        className={`${inter.variable} ${cormorant.variable} flex min-h-screen flex-col font-sans antialiased`}
+        className={`${instrument.variable} ${bricolage.variable} flex min-h-screen flex-col font-sans antialiased`}
       >
         <Navbar />
         <div className="flex-1">{children}</div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import AuthCard from "@/components/auth/AuthCard";
-import RegisterForm from "@/components/auth/RegisterForm";
+import AuthCard from "@/components/auth/auth-card";
+import RegisterForm from "@/components/auth/register-form";
 
 export default function RegisterPage() {
   return (

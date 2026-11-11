@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
-import RatingInput from "@/components/reviews/RatingInput";
+import RatingInput from "@/components/reviews/rating-input";
 import { ratePerfume } from "@/lib/actions/reviews";
 
 type ReviewSectionProps = {

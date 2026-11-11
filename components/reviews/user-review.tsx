@@ -1,4 +1,4 @@
-import ReviewSection from "@/components/reviews/ReviewSection";
+import ReviewSection from "@/components/reviews/review-section";
 import { createClient } from "@/lib/supabase/server";
 
 // Descobre se há sessão e qual a nota que esta pessoa já deu (se deu)

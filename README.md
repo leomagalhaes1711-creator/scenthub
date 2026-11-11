@@ -1,5 +1,15 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Project structure
+
+- `app/` contains the routes and Next.js route files.
+- `components/` groups reusable UI by feature (`auth`, `site-layout`, `perfume`, `profile`, `reviews`, and `ui`); component filenames use kebab-case.
+- `lib/` contains application logic grouped by responsibility: `actions`, `auth`, `queries`, and `supabase`.
+- `types/` contains shared domain types.
+- `supabase/` contains database migrations and seed data.
+- `public/` contains static assets.
+- `proxy.ts` contains request interception and authentication redirects. Its name is reserved by Next.js and should remain unchanged.
+
 ## Getting Started
 
 First, run the development server:

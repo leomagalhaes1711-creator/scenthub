@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import TextField from "@/components/ui/TextField";
+import TextField from "@/components/ui/text-field";
 import { USERNAME_PATTERN } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/client";
 

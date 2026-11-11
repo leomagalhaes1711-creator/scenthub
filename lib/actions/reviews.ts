@@ -32,6 +32,7 @@ export async function ratePerfume(
   });
 
   if (error) {
+    console.error("Erro em rate_perfume:", error);
     return {
       ok: false,
       message: "Não foi possível salvar a avaliação. Tente novamente.",

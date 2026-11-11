@@ -1,6 +1,6 @@
 import Link from "next/link";
-import BottleIcon from "@/components/perfume/BottleIcon";
-import RatingStars from "@/components/reviews/RatingStars";
+import BottleIcon from "@/components/perfume/bottle-icon";
+import RatingStars from "@/components/reviews/rating-stars";
 import type { Perfume } from "@/types/perfume";
 
 export default function PerfumeCard({ perfume }: { perfume: Perfume }) {

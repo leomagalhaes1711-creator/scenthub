@@ -1,5 +1,5 @@
-import PerfumeSection from "@/components/perfume/PerfumeSection";
-import SearchBar from "@/components/ui/SearchBar";
+import PerfumeSection from "@/components/perfume/perfume-section";
+import SearchBar from "@/components/ui/search-bar";
 import {
   getPopularPerfumes,
   getTopRatedPerfumes,

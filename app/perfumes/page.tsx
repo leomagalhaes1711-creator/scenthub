@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import PerfumeCard from "@/components/perfume/PerfumeCard";
-import SearchBar from "@/components/ui/SearchBar";
+import PerfumeCard from "@/components/perfume/perfume-card";
+import SearchBar from "@/components/ui/search-bar";
 import { searchPerfumes } from "@/lib/queries/perfumes";
 
 type PerfumesPageProps = {

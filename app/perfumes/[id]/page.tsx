@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import BottleIcon from "@/components/perfume/BottleIcon";
-import PerfumeNotes from "@/components/perfume/PerfumeNotes";
-import RatingStars from "@/components/reviews/RatingStars";
-import UserReview from "@/components/reviews/UserReview";
+import BottleIcon from "@/components/perfume/bottle-icon";
+import PerfumeNotes from "@/components/perfume/perfume-notes";
+import RatingStars from "@/components/reviews/rating-stars";
+import UserReview from "@/components/reviews/user-review";
 import { getNotesByPerfumeId } from "@/lib/queries/notes";
 import { getPerfumeById } from "@/lib/queries/perfumes";
 
