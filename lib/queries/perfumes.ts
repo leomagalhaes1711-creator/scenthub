@@ -40,7 +40,7 @@ function toPerfume(row: PerfumeRow, stats?: StatsRow): Perfume {
 async function getAllPerfumes(): Promise<Perfume[]> {
   "use cache";
   cacheLife("minutes");
-  cacheLife("perfumes");
+  cacheTag("perfumes");
 
   const supabase = createPublicClient();
 
