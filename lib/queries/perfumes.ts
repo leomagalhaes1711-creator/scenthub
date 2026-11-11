@@ -1,4 +1,4 @@
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Perfume } from "@/types/perfume";
 
@@ -40,6 +40,7 @@ function toPerfume(row: PerfumeRow, stats?: StatsRow): Perfume {
 async function getAllPerfumes(): Promise<Perfume[]> {
   "use cache";
   cacheLife("minutes");
+  cacheLife("perfumes");
 
   const supabase = createPublicClient();
 

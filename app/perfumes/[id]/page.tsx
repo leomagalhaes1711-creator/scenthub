@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import BottleIcon from "@/components/perfume/BottleIcon";
 import PerfumeNotes from "@/components/perfume/PerfumeNotes";
 import RatingStars from "@/components/reviews/RatingStars";
+import UserReview from "@/components/reviews/UserReview";
 import { getNotesByPerfumeId } from "@/lib/queries/notes";
 import { getPerfumeById } from "@/lib/queries/perfumes";
 
@@ -16,7 +17,7 @@ export default function PerfumePage({ params }: PerfumePageProps) {
     <Suspense
       fallback={
         <p className="px-6 py-20 text-center text-muted">
-          A carregar perfume...
+          Carregando perfume...
         </p>
       }
     >
@@ -64,7 +65,8 @@ async function PerfumeContent({ params }: PerfumePageProps) {
                 {perfume.ratingAverage.toFixed(1)} / 5
               </span>
               <span className="text-sm text-muted">
-                · {perfume.ratingCount.toLocaleString("pt-PT")} avaliações
+                · {perfume.ratingCount.toLocaleString("pt-PT")}{" "}
+                {perfume.ratingCount === 1 ? "avaliação" : "avaliações"}
               </span>
             </div>
           ) : (
@@ -103,6 +105,21 @@ async function PerfumeContent({ params }: PerfumePageProps) {
           Pirâmide olfativa
         </h2>
         <PerfumeNotes notes={notes} />
+      </section>
+
+      <section className="mx-auto mt-20 max-w-xl">
+        <h2 className="text-center font-serif text-3xl font-semibold text-ink md:text-4xl">
+          Sua avaliação
+        </h2>
+        <div className="mt-6">
+          <Suspense
+            fallback={
+              <p className="text-center text-muted">Carregando...</p>
+            }
+          >
+            <UserReview perfumeId={perfume.id} />
+          </Suspense>
+        </div>
       </section>
     </main>
   );
