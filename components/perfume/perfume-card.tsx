@@ -1,6 +1,6 @@
 import Link from "next/link";
-import PerfumeBottle from "@/components/perfume/PerfumeBottle";
-import RatingStars from "@/components/reviews/RatingStars";
+import PerfumeBottle from "@/components/perfume/perfume-bottle";
+import RatingStars from "@/components/reviews/rating-stars";
 import { getBottleVariant, getTint, readableTextOn } from "@/lib/liquid";
 import type { Perfume } from "@/types/perfume";
 

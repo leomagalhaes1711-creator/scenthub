@@ -12,15 +12,6 @@
   --color-smoke: #5f646d;
   --color-mist: #ecece8;
 
-  /* Cores dos líquidos, uma por categoria de nota */
-  --color-liquid-citrus: #f2c230;
-  --color-liquid-floral: #e36a8d;
-  --color-liquid-wood: #8c5a3c;
-  --color-liquid-aquatic: #3fa7c9;
-  --color-liquid-green: #4e9f5b;
-  --color-liquid-amber: #e08a1e;
-  --color-liquid-smoke: #3a3a40;
-
   /* Nomes antigos: temporários, apontam para a nova paleta.
      Saem quando todos os componentes estiverem migrados. */
   --color-cream: #f7f7f5;
