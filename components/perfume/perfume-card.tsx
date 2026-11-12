@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import PerfumeBottle from "@/components/perfume/perfume-bottle";
 import RatingStars from "@/components/reviews/rating-stars";
@@ -14,9 +15,25 @@ export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
         className="relative flex aspect-[4/5] items-center justify-center"
         style={{ backgroundColor: getTint(perfume.liquidColor) }}
       >
+        {perfume.imageUrl ? (
+          <Image
+            src={perfume.imageUrl}
+            alt={`Frasco do perfume ${perfume.name}`}
+            fill
+            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+            className="object-contain p-8 mix-blend-multiply transition duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <PerfumeBottle
+            color={perfume.liquidColor}
+            variant={getBottleVariant(perfume.id)}
+            className="h-3/5 transition duration-300 group-hover:scale-105"
+          />
+        )}
+
         {perfume.liquidCategory && (
           <span
-            className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-medium"
+            className="absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-xs font-medium"
             style={{
               backgroundColor: perfume.liquidColor,
               color: readableTextOn(perfume.liquidColor),
@@ -25,11 +42,6 @@ export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
             {perfume.liquidCategory}
           </span>
         )}
-        <PerfumeBottle
-          color={perfume.liquidColor}
-          variant={getBottleVariant(perfume.id)}
-          className="h-3/5 transition duration-300 group-hover:scale-105"
-        />
       </div>
 
       <div className="space-y-1 p-4">
