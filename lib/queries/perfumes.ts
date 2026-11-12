@@ -1,5 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { getLiquid, type LiquidEntry } from "@/lib/liquid";
 import { createPublicClient } from "@/lib/supabase/public";
+import type { NoteType } from "@/types/note";
 import type { Perfume } from "@/types/perfume";
 
 // Forma de uma linha da tabela perfumes (com a marca incluída)
@@ -20,8 +22,21 @@ type StatsRow = {
   rating_count: number;
 };
 
+// Forma de uma ligação perfume-nota (com a categoria da nota)
+type NoteLinkRow = {
+  perfume_id: string;
+  type: NoteType;
+  notes: { category: string } | null;
+};
+
 // Converte os nomes da base de dados (image_url) para os do site (imageUrl)
-function toPerfume(row: PerfumeRow, stats?: StatsRow): Perfume {
+function toPerfume(
+  row: PerfumeRow,
+  stats: StatsRow | undefined,
+  entries: LiquidEntry[],
+): Perfume {
+  const liquid = getLiquid(entries);
+
   return {
     id: row.id,
     name: row.name,
@@ -32,11 +47,13 @@ function toPerfume(row: PerfumeRow, stats?: StatsRow): Perfume {
     description: row.description ?? "",
     ratingAverage: Number(stats?.rating_average ?? 0),
     ratingCount: stats?.rating_count ?? 0,
+    liquidCategory: liquid.category,
+    liquidColor: liquid.color,
   };
 }
 
 // Vai buscar todos os perfumes à base de dados.
-// O resultado fica em cache durante alguns minutos.
+// O resultado fica em cache e só é refeito quando passa o tempo ou há avaliações novas.
 async function getAllPerfumes(): Promise<Perfume[]> {
   "use cache";
   cacheLife("minutes");
@@ -44,7 +61,7 @@ async function getAllPerfumes(): Promise<Perfume[]> {
 
   const supabase = createPublicClient();
 
-  const [perfumesResult, statsResult] = await Promise.all([
+  const [perfumesResult, statsResult, linksResult] = await Promise.all([
     supabase
       .from("perfumes")
       .select(
@@ -54,6 +71,7 @@ async function getAllPerfumes(): Promise<Perfume[]> {
     supabase
       .from("perfume_stats")
       .select("perfume_id, rating_average, rating_count"),
+    supabase.from("perfume_notes").select("perfume_id, type, notes(category)"),
   ]);
 
   if (perfumesResult.error) {
@@ -61,6 +79,9 @@ async function getAllPerfumes(): Promise<Perfume[]> {
   }
   if (statsResult.error) {
     throw new Error(`Erro ao carregar avaliações: ${statsResult.error.message}`);
+  }
+  if (linksResult.error) {
+    throw new Error(`Erro ao carregar notas: ${linksResult.error.message}`);
   }
 
   const statsById = new Map<string, StatsRow>(
@@ -70,8 +91,19 @@ async function getAllPerfumes(): Promise<Perfume[]> {
     ]),
   );
 
+  // Agrupa as notas de cada perfume (só precisamos do nível e da categoria)
+  const entriesByPerfume = new Map<string, LiquidEntry[]>();
+
+  for (const link of linksResult.data as unknown as NoteLinkRow[]) {
+    if (!link.notes) continue;
+
+    const list = entriesByPerfume.get(link.perfume_id) ?? [];
+    list.push({ type: link.type, category: link.notes.category });
+    entriesByPerfume.set(link.perfume_id, list);
+  }
+
   return (perfumesResult.data as unknown as PerfumeRow[]).map((row) =>
-    toPerfume(row, statsById.get(row.id)),
+    toPerfume(row, statsById.get(row.id), entriesByPerfume.get(row.id) ?? []),
   );
 }
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
-import BottleIcon from "@/components/perfume/bottle-icon";
-import RatingStars from "@/components/reviews/rating-stars";
+import PerfumeBottle from "@/components/perfume/PerfumeBottle";
+import RatingStars from "@/components/reviews/RatingStars";
+import { getBottleVariant, getTint, readableTextOn } from "@/lib/liquid";
 import type { Perfume } from "@/types/perfume";
 
 export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
@@ -9,8 +10,26 @@ export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
       href={`/perfumes/${perfume.id}`}
       className="group block overflow-hidden rounded-2xl border border-ink/10 bg-white/60 transition duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
-      <div className="flex aspect-[4/5] items-center justify-center bg-sand/60">
-        <BottleIcon className="h-1/2 transition duration-300 group-hover:scale-110" />
+      <div
+        className="relative flex aspect-[4/5] items-center justify-center"
+        style={{ backgroundColor: getTint(perfume.liquidColor) }}
+      >
+        {perfume.liquidCategory && (
+          <span
+            className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-medium"
+            style={{
+              backgroundColor: perfume.liquidColor,
+              color: readableTextOn(perfume.liquidColor),
+            }}
+          >
+            {perfume.liquidCategory}
+          </span>
+        )}
+        <PerfumeBottle
+          color={perfume.liquidColor}
+          variant={getBottleVariant(perfume.id)}
+          className="h-3/5 transition duration-300 group-hover:scale-105"
+        />
       </div>
 
       <div className="space-y-1 p-4">
