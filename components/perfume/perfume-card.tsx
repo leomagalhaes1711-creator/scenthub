@@ -6,6 +6,12 @@ import { getBottleVariant, getTint, readableTextOn } from "@/lib/liquid";
 import type { Perfume } from "@/types/perfume";
 
 export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
+  // Com foto e cor medida: usa a cor do fundo da foto.
+  // Caso contrário: usa o tom suave do líquido.
+  const background =
+    (perfume.imageUrl && perfume.imageBackground) ||
+    getTint(perfume.liquidColor);
+
   return (
     <Link
       href={`/perfumes/${perfume.id}`}
@@ -13,7 +19,7 @@ export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
     >
       <div
         className="relative flex aspect-[4/5] items-center justify-center"
-        style={{ backgroundColor: getTint(perfume.liquidColor) }}
+        style={{ backgroundColor: background }}
       >
         {perfume.imageUrl ? (
           <Image
@@ -21,7 +27,9 @@ export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
             alt={`Frasco do perfume ${perfume.name}`}
             fill
             sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-            className="object-contain p-8 mix-blend-multiply transition duration-300 group-hover:scale-105"
+            className={`object-contain transition duration-300 group-hover:scale-105 ${
+              perfume.imageBackground ? "" : "p-8 mix-blend-multiply"
+            }`}
           />
         ) : (
           <PerfumeBottle

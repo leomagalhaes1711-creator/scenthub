@@ -9,6 +9,7 @@ type PerfumeRow = {
   id: string;
   name: string;
   image_url: string | null;
+  image_bg: string | null;
   release_year: number | null;
   perfumer: string | null;
   description: string | null;
@@ -42,6 +43,7 @@ function toPerfume(
     name: row.name,
     brand: row.brands?.name ?? "Marca desconhecida",
     imageUrl: row.image_url,
+    imageBackground: row.image_bg,
     releaseYear: row.release_year,
     perfumer: row.perfumer,
     description: row.description ?? "",
@@ -65,7 +67,7 @@ async function getAllPerfumes(): Promise<Perfume[]> {
     supabase
       .from("perfumes")
       .select(
-        "id, name, image_url, release_year, perfumer, description, brands(name)",
+        "id, name, image_url, image_bg, release_year, perfumer, description, brands(name)",
       )
       .order("name"),
     supabase

@@ -5,6 +5,7 @@ export interface Perfume {
   name: string;
   brand: string;
   imageUrl: string | null; // null = usa o frasco desenhado
+  imageBackground: string | null; // cor do fundo da imagem
   releaseYear: number | null;
   perfumer: string | null;
   description: string;
