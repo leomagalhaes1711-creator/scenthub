@@ -125,3 +125,17 @@ export function getBottleVariant(id: string): 0 | 1 | 2 {
   }
   return (sum % 3) as 0 | 1 | 2;
 }
+export function mixHex(color: string, other: string, amount: number): string {
+  const a = color.replace("#", "");
+  const b = other.replace("#", "");
+
+  const mix = (index: number) => {
+    const from = parseInt(a.slice(index, index + 2), 16);
+    const to = parseInt(b.slice(index, index + 2), 16);
+    return Math.round(from * amount + to * (1 - amount));
+  };
+
+  return `#${[0, 2, 4]
+    .map((index) => mix(index).toString(16).padStart(2, "0"))
+    .join("")}`;
+}

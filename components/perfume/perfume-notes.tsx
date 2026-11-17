@@ -1,88 +1,60 @@
-import type { NoteCategory, NoteType, PerfumeNotesGrouped } from "@/types/note";
+import { CATEGORY_COLORS, mixHex, readableTextOn } from "@/lib/liquid";
+import type { NoteType, PerfumeNotesGrouped } from "@/types/note";
 
-// Cor do círculo de cada categoria
-const categoryDot: Record<NoteCategory, string> = {
-  Cítrico: "bg-yellow-400",
-  Especiado: "bg-red-700",
-  Aromático: "bg-emerald-600",
-  Floral: "bg-pink-400",
-  Amadeirado: "bg-stone-500",
-  Doce: "bg-rose-300",
-  Âmbar: "bg-orange-400",
-  Aquático: "bg-sky-400",
-  Verde: "bg-green-500",
-  Fumado: "bg-zinc-800",
-};
+const PAPER = "#f7f7f5";
 
-// As três faixas da pirâmide, de cima para baixo
-const tiers: {
+// As três camadas, de cima para baixo: a cor vai ficando mais carregada
+const TIERS: {
   type: NoteType;
   title: string;
   hint: string;
-  width: string;
-  background: string;
+  amount: number;
 }[] = [
-  {
-    type: "top",
-    title: "Notas de topo",
-    hint: "Os primeiros minutos",
-    width: "max-w-md",
-    background: "bg-amber/10",
-  },
-  {
-    type: "heart",
-    title: "Notas de coração",
-    hint: "O carácter do perfume",
-    width: "max-w-2xl",
-    background: "bg-amber/20",
-  },
-  {
-    type: "base",
-    title: "Notas de base",
-    hint: "O rasto que fica na pele",
-    width: "max-w-4xl",
-    background: "bg-amber/30",
-  },
+  { type: "top", title: "Notas de topo", hint: "Os primeiros minutos", amount: 0.22 },
+  { type: "heart", title: "Notas de coração", hint: "O carácter do perfume", amount: 0.5 },
+  { type: "base", title: "Notas de base", hint: "O que fica na pele", amount: 0.85 },
 ];
 
-export default function PerfumeNotes({ notes }: { notes: PerfumeNotesGrouped }) {
-  const hasNotes = tiers.some((tier) => notes[tier.type].length > 0);
+type PerfumeNotesProps = {
+  notes: PerfumeNotesGrouped;
+  liquidColor: string;
+};
 
-  if (!hasNotes) {
+export default function PerfumeNotes({ notes, liquidColor }: PerfumeNotesProps) {
+  const visible = TIERS.filter((tier) => notes[tier.type].length > 0);
+
+  if (visible.length === 0) {
     return null;
   }
 
   return (
-    <div className="mt-8 flex flex-col items-center gap-3">
-      {tiers.map((tier) => {
-        const tierNotes = notes[tier.type];
-
-        if (tierNotes.length === 0) {
-          return null;
-        }
+    <div className="mt-8 overflow-hidden rounded-md">
+      {visible.map((tier) => {
+        const background = mixHex(liquidColor, PAPER, tier.amount);
+        const text = readableTextOn(background);
 
         return (
           <div
             key={tier.type}
-            className={`w-full ${tier.width} rounded-3xl px-6 py-6 text-center ${tier.background}`}
+            className="grid gap-4 px-6 py-8 md:grid-cols-[16rem_1fr] md:px-10"
+            style={{ backgroundColor: background, color: text }}
           >
-            <h3 className="font-serif text-2xl font-semibold text-ink">
-              {tier.title}
-            </h3>
-            <p className="mt-1 text-xs uppercase tracking-widest text-muted">
-              {tier.hint}
-            </p>
+            <div>
+              <h3 className="font-display text-xl font-medium">{tier.title}</h3>
+              <p className="text-sm opacity-75">{tier.hint}</p>
+            </div>
 
-            <ul className="mt-4 flex flex-wrap justify-center gap-2">
-              {tierNotes.map((note) => (
+            <ul className="flex flex-wrap gap-x-8 gap-y-3 text-lg">
+              {notes[tier.type].map((note) => (
                 <li
                   key={note.id}
                   title={note.category}
-                  className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white/80 px-3 py-1.5 text-sm text-ink"
+                  className="flex items-center gap-2"
                 >
                   <span
-                    className={`h-2.5 w-2.5 rounded-full ${categoryDot[note.category]}`}
                     aria-hidden="true"
+                    className="h-3 w-3 rounded-full ring-1 ring-black/20"
+                    style={{ backgroundColor: CATEGORY_COLORS[note.category] }}
                   />
                   {note.name}
                 </li>

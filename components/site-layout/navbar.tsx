@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import AuthLinks from "@/components/layout/auth-links";
+import AuthLinks from "@/components/site-layout/auth-links";
 import { createClient } from "@/lib/supabase/client";
 
 const links = [
