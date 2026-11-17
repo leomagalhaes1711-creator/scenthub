@@ -1,4 +1,4 @@
- import Link from "next/link";
+import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 
 type AuthLinksProps = {
@@ -23,11 +23,11 @@ export default function AuthLinks({
 
   const linkClass = mobile
     ? "text-base font-medium text-ink"
-    : "text-sm font-medium text-ink transition hover:text-amber";
+    : "text-sm font-medium text-ink underline-offset-4 hover:underline";
 
   const buttonClass = mobile
-    ? "rounded-full bg-amber px-5 py-2.5 text-center text-sm font-medium text-cream"
-    : "rounded-full bg-amber px-5 py-2 text-sm font-medium text-cream transition hover:bg-amber-dark";
+    ? "rounded-full bg-ink px-5 py-2.5 text-center text-sm font-medium text-paper"
+    : "rounded-full bg-ink px-5 py-2 text-sm font-medium text-paper transition hover:bg-ink/80";
 
   if (user) {
     return (

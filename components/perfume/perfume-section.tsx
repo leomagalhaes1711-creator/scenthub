@@ -16,25 +16,27 @@ export default function PerfumeSection({
   emptyMessage = "Ainda não há perfumes para mostrar.",
 }: PerfumeSectionProps) {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-12">
-      <div className="mb-6 flex items-end justify-between">
-        <h2 className="font-serif text-3xl font-semibold text-ink">{title}</h2>
+    <section className="mx-auto max-w-6xl px-6 py-16">
+      <div className="mb-8 flex items-baseline justify-between gap-4">
+        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+          {title}
+        </h2>
         <Link
           href={href}
-          className="text-sm font-medium text-amber transition hover:text-amber-dark"
+          className="text-sm font-medium text-ink underline underline-offset-4"
         >
-          Ver todos →
+          Ver todos
         </Link>
       </div>
 
       {perfumes.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
           {perfumes.map((perfume) => (
             <PerfumeCard key={perfume.id} perfume={perfume} />
           ))}
         </div>
       ) : (
-        <p className="rounded-2xl border border-dashed border-ink/20 px-6 py-10 text-center text-muted">
+        <p className="border-t border-ink/10 py-10 text-smoke">
           {emptyMessage}
         </p>
       )}

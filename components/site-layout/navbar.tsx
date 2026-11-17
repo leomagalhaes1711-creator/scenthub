@@ -4,8 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import AuthLinks from "@/components/site-layout/auth-links";
-import BottleIcon from "@/components/perfume/bottle-icon";
+import AuthLinks from "@/components/layout/auth-links";
 import { createClient } from "@/lib/supabase/client";
 
 const links = [
@@ -42,17 +41,14 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink/10 bg-cream/90 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <header className="sticky top-0 z-50 border-b border-ink/10 bg-paper">
+      <nav className="flex h-[72px] items-center justify-between px-6 md:px-12">
         <Link
           href="/"
-          className="flex items-center gap-2"
           onClick={() => setOpen(false)}
+          className="font-display text-2xl font-semibold tracking-tight text-ink"
         >
-          <BottleIcon className="h-7 w-[22px]" />
-          <span className="font-serif text-2xl font-semibold text-ink">
-            ScentHub
-          </span>
+          ScentHub
         </Link>
 
         {/* Menu para ecrãs grandes */}
@@ -61,7 +57,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted transition hover:text-amber"
+              className="text-sm font-medium text-ink underline-offset-4 hover:underline"
             >
               {link.label}
             </Link>
@@ -77,12 +73,11 @@ export default function Navbar() {
         {/* Botão do menu para telemóvel */}
         <button
           type="button"
-          className="text-2xl text-ink md:hidden"
+          className="text-sm font-medium text-ink md:hidden"
           onClick={() => setOpen(!open)}
-          aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
         >
-          {open ? "✕" : "☰"}
+          {open ? "Fechar" : "Menu"}
         </button>
       </nav>
 
