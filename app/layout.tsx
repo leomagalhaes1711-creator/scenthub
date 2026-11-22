@@ -27,9 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt">
-      <body
-        className={`${instrument.variable} ${bricolage.variable} flex min-h-screen flex-col font-sans antialiased`}
-      >
+      <body className={`${instrument.variable} ${bricolage.variable} flex min-h-screen flex-col font-sans antialiased`}> 
         <Navbar />
         <div className="flex-1">{children}</div>
         <Footer />

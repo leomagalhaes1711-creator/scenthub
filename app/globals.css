@@ -12,14 +12,6 @@
   --color-smoke: #5f646d;
   --color-mist: #ecece8;
 
-  /* Nomes antigos: temporários, apontam para a nova paleta.
-     Saem quando todos os componentes estiverem migrados. */
-  --color-cream: #f7f7f5;
-  --color-sand: #ecece8;
-  --color-muted: #5f646d;
-  --color-amber: #16181d;
-  --color-amber-dark: #000000;
-
   /* Letras */
   --font-sans: var(--font-instrument);
   --font-display: var(--font-bricolage);

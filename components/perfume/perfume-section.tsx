@@ -7,6 +7,7 @@ type PerfumeSectionProps = {
   perfumes: Perfume[];
   href?: string;
   emptyMessage?: string;
+  isLoggedIn?: boolean;
 };
 
 export default function PerfumeSection({
@@ -14,6 +15,7 @@ export default function PerfumeSection({
   perfumes,
   href = "/perfumes",
   emptyMessage = "Ainda não há perfumes para mostrar.",
+  isLoggedIn = false,
 }: PerfumeSectionProps) {
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
@@ -32,7 +34,7 @@ export default function PerfumeSection({
       {perfumes.length > 0 ? (
         <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
           {perfumes.map((perfume) => (
-            <PerfumeCard key={perfume.id} perfume={perfume} />
+            <PerfumeCard key={perfume.id} perfume={perfume} isLoggedIn={isLoggedIn} />
           ))}
         </div>
       ) : (

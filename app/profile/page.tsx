@@ -1,13 +1,15 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import PerfumeCard from "@/components/perfume/perfume-card";
 import ProfileForm from "@/components/profile/profile-form";
 import { requireUser } from "@/lib/auth/require-user";
+import { getUserFavorites } from "@/lib/queries/favorites";
 
 export default function ProfilePage() {
   return (
     <Suspense
       fallback={
-        <p className="px-6 py-20 text-center text-muted">
+        <p className="px-6 py-20 text-center text-smoke">
           Carregando perfil...
         </p>
       }
@@ -30,6 +32,9 @@ async function ProfileContent() {
     throw new Error(`Erro ao carregar o perfil: ${error.message}`);
   }
 
+  const favorites = await getUserFavorites(user.id);
+  const recentFavorites = favorites.slice(0, 4);
+
   const memberSince = new Date(user.created_at).toLocaleDateString("pt-PT", {
     day: "numeric",
     month: "long",
@@ -38,18 +43,18 @@ async function ProfileContent() {
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="font-serif text-4xl font-semibold text-ink md:text-5xl">
+      <h1 className="font-display text-4xl font-semibold tracking-tight text-ink md:text-5xl">
         Meu perfil
       </h1>
-      <p className="mt-2 text-muted">Membro desde {memberSince}</p>
+      <p className="mt-2 text-smoke">Membro desde {memberSince}</p>
 
       <section className="mt-10 rounded-3xl border border-ink/10 bg-white/70 p-8">
-        <h2 className="font-serif text-2xl font-semibold text-ink">
+        <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
           Dados da conta
         </h2>
 
         <dl className="mt-6">
-          <dt className="text-xs uppercase tracking-widest text-muted">
+          <dt className="text-xs uppercase tracking-widest text-smoke">
             Email
           </dt>
           <dd className="mt-1 text-ink">{user.email}</dd>
@@ -64,18 +69,34 @@ async function ProfileContent() {
       </section>
 
       <section className="mt-8 rounded-3xl border border-ink/10 bg-white/70 p-8">
-        <h2 className="font-serif text-2xl font-semibold text-ink">
-          Meus favoritos
-        </h2>
-        <p className="mt-2 text-muted">
-          Os perfumes que você guardar aparecem aqui.
-        </p>
-        <Link
-          href="/favorites"
-          className="mt-4 inline-block text-sm font-medium text-amber transition hover:text-amber-dark"
-        >
-          Ver meus favoritos →
-        </Link>
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+            Meus favoritos
+            <span className="ml-2 text-lg font-normal text-smoke">({favorites.length})</span>
+          </h2>
+          <Link
+            href="/favorites"
+            className="text-sm font-medium text-ink underline underline-offset-2 transition hover:text-smoke"
+          >
+            Ver todos
+          </Link>
+        </div>
+
+        {recentFavorites.length > 0 ? (
+          <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4">
+            {recentFavorites.map((perfume) => (
+              <PerfumeCard key={perfume.id} perfume={perfume} isLoggedIn={true} />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-4 text-smoke text-center py-8">
+            Ainda não tem favoritos.{" "}
+            <Link href="/perfumes" className="underline underline-offset-2 hover:text-ink">
+              Explore os perfumes
+            </Link>{" "}
+            e guarde os seus preferidos.
+          </p>
+        )}
       </section>
     </main>
   );

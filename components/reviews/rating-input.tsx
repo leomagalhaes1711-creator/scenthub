@@ -36,7 +36,7 @@ export default function RatingInput({
           onFocus={() => setHover(star)}
           onBlur={() => setHover(0)}
           className={`text-4xl leading-none transition hover:scale-110 disabled:cursor-not-allowed ${
-            star <= active ? "text-amber" : "text-ink/15"
+            star <= active ? "text-yellow-500" : "text-ink/15"
           }`}
         >
           ★

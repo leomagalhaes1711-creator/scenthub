@@ -2,10 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import PerfumeBottle from "@/components/perfume/perfume-bottle";
 import RatingStars from "@/components/reviews/rating-stars";
+import FavoriteButton from "@/components/perfume/favorite-button";
 import { getBottleVariant, getTint } from "@/lib/liquid";
 import type { Perfume } from "@/types/perfume";
 
-export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
+export default function PerfumeCard({
+  perfume,
+  isLoggedIn = false,
+}: { perfume: Perfume; isLoggedIn?: boolean }) {
   // Com foto e cor medida: usa a cor do fundo da foto.
   // Caso contrário: usa o tom suave do líquido.
   const background =
@@ -35,6 +39,11 @@ export default function PerfumeCard({ perfume }: { perfume: Perfume }) {
             className="h-3/5 transition duration-500 group-hover:scale-105 motion-reduce:transition-none"
           />
         )}
+
+        {/* Botão de favorito no canto superior direito da imagem */}
+        <div className="absolute top-2 right-2 z-10">
+          <FavoriteButton perfumeId={perfume.id} isLoggedIn={isLoggedIn} />
+        </div>
       </div>
 
       <h3 className="mt-3 font-display text-lg font-medium leading-tight text-ink underline-offset-4 group-hover:underline">

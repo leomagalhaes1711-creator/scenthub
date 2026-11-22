@@ -104,7 +104,7 @@ export default function ProfileForm({
       <button
         type="submit"
         disabled={loading}
-        className="rounded-full bg-amber px-6 py-2.5 text-sm font-medium text-cream transition hover:bg-amber-dark disabled:cursor-not-allowed disabled:opacity-60"
+        className="rounded-full bg-ink px-6 py-2.5 text-sm font-medium text-paper transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60"
       >
         {loading ? "Salvando..." : "Salvar"}
       </button>

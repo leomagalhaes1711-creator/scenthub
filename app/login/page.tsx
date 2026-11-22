@@ -13,7 +13,7 @@ export default function LoginPage() {
           Ainda não tem conta?{" "}
           <Link
             href="/register"
-            className="font-medium text-amber transition hover:text-amber-dark"
+            className="font-medium text-ink underline underline-offset-2 transition hover:text-smoke"
           >
             Criar conta
           </Link>

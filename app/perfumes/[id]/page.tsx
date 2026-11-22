@@ -2,10 +2,13 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import PerfumeBottle from "@/components/perfume/perfume-bottle";
 import PerfumeNotes from "@/components/perfume/perfume-notes";
 import RatingStars from "@/components/reviews/rating-stars";
 import UserReview from "@/components/reviews/user-review";
+import CommentList from "@/components/reviews/comment-list";
+import FavoriteButton from "@/components/perfume/favorite-button";
 import { getBottleVariant, readableTextOn } from "@/lib/liquid";
 import { getNotesByPerfumeId } from "@/lib/queries/notes";
 import { getPerfumeById } from "@/lib/queries/perfumes";
@@ -37,6 +40,12 @@ async function PerfumeContent({ params }: PerfumePageProps) {
   }
 
   const notes = await getNotesByPerfumeId(perfume.id);
+
+  // Usuário atual para os comentários
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   // O campo de cor: a cor do fundo da foto, ou a do líquido
   const field =
@@ -74,9 +83,13 @@ async function PerfumeContent({ params }: PerfumePageProps) {
                     {perfume.ratingCount.toLocaleString("pt-PT")}{" "}
                     {perfume.ratingCount === 1 ? "avaliação" : "avaliações"}
                   </span>
+                  <FavoriteButton perfumeId={perfume.id} isLoggedIn={Boolean(user)} />
                 </div>
               ) : (
-                <p className="mt-6 text-sm opacity-80">Ainda sem avaliações.</p>
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <p className="text-sm opacity-80">Ainda sem avaliações.</p>
+                  <FavoriteButton perfumeId={perfume.id} isLoggedIn={Boolean(user)} />
+                </div>
               )}
 
               <dl className="mt-10 grid max-w-md grid-cols-2 gap-6 border-t border-current/30 pt-6">
@@ -141,6 +154,10 @@ async function PerfumeContent({ params }: PerfumePageProps) {
               <UserReview perfumeId={perfume.id} />
             </Suspense>
           </div>
+        </section>
+
+        <section className="mt-16 max-w-2xl">
+          <CommentList perfumeId={perfume.id} currentUserId={user?.id ?? null} />
         </section>
       </div>
     </main>

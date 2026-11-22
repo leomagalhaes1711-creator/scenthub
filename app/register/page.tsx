@@ -12,7 +12,7 @@ export default function RegisterPage() {
           Já possui conta?{" "}
           <Link
             href="/login"
-            className="font-medium text-amber transition hover:text-amber-dark"
+            className="font-medium text-ink underline underline-offset-2 transition hover:text-smoke"
           >
             Entrar
           </Link>

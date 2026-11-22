@@ -25,20 +25,20 @@ export default function ReviewSection({
   if (!isLoggedIn) {
     return (
       <div className="border-t border-ink/10 pt-6">
-        <p className="text-muted">
+        <p className="text-smoke">
           Entre na sua conta para avaliar este perfume, comentar e guardar
           favoritos.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href={`/login?next=${encodeURIComponent(`/perfumes/${perfumeId}`)}`}
-            className="rounded-full bg-amber px-6 py-2.5 text-sm font-medium text-cream transition hover:bg-amber-dark"
+            className="rounded-full bg-ink px-6 py-2.5 text-sm font-medium text-paper transition hover:bg-black"
           >
             Entrar
           </Link>
           <Link
             href="/register"
-            className="rounded-full border border-amber px-6 py-2.5 text-sm font-medium text-amber transition hover:bg-amber/10"
+            className="rounded-full border border-ink px-6 py-2.5 text-sm font-medium text-ink transition hover:bg-ink/10"
           >
             Criar conta
           </Link>
@@ -72,7 +72,7 @@ export default function ReviewSection({
 
   return (
     <div className="border-t border-ink/10 pt-6">
-      <p className="text-muted">
+      <p className="text-smoke">
         {rating
           ? "Clique numa estrela para alterar a sua nota."
           : "Escolha de 1 a 5 estrelas."}

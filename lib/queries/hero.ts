@@ -7,10 +7,9 @@ import type { Perfume } from "@/types/perfume";
 const HERO_IDS = [
   "sauvage",
   "le-male",
-  "fahrenheit",
-  "habit-rouge",
+  "a-men",
+  "boss-bottled",
   "cool-water",
-  "acqua-di-gio",
 ];
 
 export async function getHeroItems(): Promise<HeroItem[]> {
