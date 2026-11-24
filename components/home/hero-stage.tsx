@@ -1,34 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import PerfumeBottle from "@/components/perfume/perfume-bottle";
-import { getBottleVariant, readableTextOn } from "@/lib/liquid";
+import { getBottleVariant, readableTextOn, CATEGORY_COLORS } from "@/lib/liquid";
 import type { HeroItem } from "@/types/hero";
 import type { NoteType } from "@/types/note";
 
-// As três linhas da pirâmide, de cima para baixo
-const TIERS: { type: NoteType; label: string; width: string }[] = [
-  { type: "top", label: "Topo", width: "w-[48%]" },
-  { type: "heart", label: "Coração", width: "w-[74%]" },
-  { type: "base", label: "Base", width: "w-full" },
+// Pirâmide com larguras proporcionais à duração real
+const TIERS: {
+  type: NoteType;
+  label: string;
+  subtitle: string;
+  portion: number;
+}[] = [
+  { type: "top", label: "Topo", subtitle: "Primeiros 15 min", portion: 0.15 },
+  { type: "heart", label: "Coração", subtitle: "2 a 4 h", portion: 0.35 },
+  { type: "base", label: "Base", subtitle: "6 h +", portion: 0.50 },
 ];
 
-// Luz difusa e grão fino por cima do campo de cor
+// Luz difusa sutil
 const LIGHT =
-  "radial-gradient(60% 70% at 72% 28%, rgba(255,255,255,0.30), rgba(255,255,255,0) 70%)";
-
-const GRAIN =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
-
-function pad(value: number) {
-  return String(value).padStart(2, "0");
-}
+  "radial-gradient(60% 70% at 72% 28%, rgba(255,255,255,0.25), rgba(255,255,255,0) 70%)";
 
 export default function HeroStage({ items }: { items: HeroItem[] }) {
   const [index, setIndex] = useState(0);
   const total = items.length;
+  const [mounted, setMounted] = useState(false);
 
   const go = useCallback(
     (step: number) => {
@@ -37,112 +35,66 @@ export default function HeroStage({ items }: { items: HeroItem[] }) {
     [total],
   );
 
-  // Setas do teclado (ignora quando se está a escrever num campo)
+  // Navegação por teclado
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       const target = event.target as HTMLElement | null;
-
       if (target && ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) {
         return;
       }
-
       if (event.key === "ArrowRight") go(1);
       if (event.key === "ArrowLeft") go(-1);
     }
-
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [go]);
 
-  if (total === 0) {
+  // Evita flash de layout no SSR
+  useEffect(() => setMounted(true), []);
+
+  if (total === 0 || !mounted) {
     return null;
   }
 
   const { perfume, notes } = items[index];
 
-  // O campo de cor: a cor do fundo da foto, ou a do líquido
-  const field =
-    (perfume.imageUrl && perfume.imageBackground) || perfume.liquidColor;
-  const text = readableTextOn(field);
+  // Cor base: cor do fundo da foto se houver, senão cor do líquido
+  const baseColor = (perfume.imageUrl && perfume.imageBackground) || perfume.liquidColor;
+  const text = readableTextOn(baseColor);
 
-  // O nome encolhe quando é comprido, para caber numa só linha
-  const nameLength = Math.max(perfume.name.length, 6);
-  const nameSize = `clamp(1.75rem, min(18vw, ${(148 / nameLength).toFixed(2)}vw), 14rem)`;
+  // Gradiente: da cor base no topo → papel (#f7f7f5) no fundo
+  const backgroundGradient = `linear-gradient(180deg, ${baseColor} 0%, ${baseColor} 35%, #f7f7f5 100%)`;
 
-  const buttonClass =
-    "flex h-10 w-10 items-center justify-center rounded-full border border-current/40 text-xl transition hover:bg-current/10 motion-reduce:transition-none";
+  // Tem foto?
+  const hasPhoto = Boolean(perfume.imageUrl);
 
   return (
     <section
-      className="relative isolate flex min-h-[calc(100svh-73px)] flex-col overflow-hidden transition-colors duration-700 motion-reduce:transition-none"
-      style={{ backgroundColor: field, color: text }}
+      className="relative isolate flex min-h-[calc(100svh-72px)] flex-col overflow-hidden motion-reduce:transition-none"
+      style={{ background: backgroundGradient, color: text }}
     >
-      {/* Luz e grão */}
+      {/* Luz de fundo sutil */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
         style={{ backgroundImage: LIGHT }}
       />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 opacity-20 mix-blend-overlay"
-        style={{ backgroundImage: GRAIN }}
-      />
 
-      {/* Nome gigante, decorativo */}
-      <p
-        key={`name-${perfume.id}`}
-        aria-hidden="true"
-        className="stage-in select-none whitespace-nowrap px-6 pt-6 font-display font-semibold uppercase leading-none tracking-tight md:px-12"
-        style={{ fontSize: nameSize, opacity: 0.22 }}
-      >
-        {perfume.name}
-      </p>
-
-      <h1 className="sr-only">{perfume.name}</h1>
-
-      {/* Palco */}
-      <div className="grid flex-1 items-center gap-8 px-6 py-8 md:grid-cols-2 md:px-12">
-        <div key={`info-${perfume.id}`} className="stage-in order-2 md:order-1">
-          <p className="text-sm opacity-80">
-            {perfume.brand}
-            {perfume.releaseYear ? `, ${perfume.releaseYear}` : ""}
-          </p>
-
-          <div className="mt-6 w-full max-w-md space-y-4">
-            {TIERS.map((tier) => {
-              const names = notes[tier.type].map((note) => note.name);
-
-              if (names.length === 0) {
-                return null;
-              }
-
-              return (
-                <div
-                  key={tier.type}
-                  className={`mx-auto border-t border-current/40 pt-2 text-center ${tier.width}`}
-                >
-                  <p className="text-xs opacity-70">{tier.label}</p>
-                  <p className="mt-0.5 text-sm font-medium">
-                    {names.join(" · ")}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
+      {/* Conteúdo central vertical */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 md:px-12">
+        {/* GARRAFA — protagonista (foto ou SVG) */}
         <div
           key={`bottle-${perfume.id}`}
-          className="stage-in relative order-1 mx-auto h-[40svh] w-full max-w-sm md:order-2 md:h-[56svh]"
+          className="relative w-full max-w-xs mx-auto mb-10 bottle-entrance"
+          style={{ height: "45vh", maxHeight: "420px" }}
         >
-          {perfume.imageUrl ? (
+          {hasPhoto ? (
             <Image
-              src={perfume.imageUrl}
+              src={perfume.imageUrl!}
               alt={`Frasco do perfume ${perfume.name}`}
               fill
               sizes="(min-width: 768px) 40vw, 90vw"
-              className={`object-contain [mask-image:radial-gradient(closest-side,black_72%,transparent)] ${
+              className={`object-contain [mask-image:radial-gradient(closest-side,black_72%,transparent)] transition-opacity duration-300 ease-out ${
                 perfume.imageBackground ? "" : "mix-blend-multiply"
               }`}
             />
@@ -150,55 +102,93 @@ export default function HeroStage({ items }: { items: HeroItem[] }) {
             <PerfumeBottle
               color={perfume.liquidColor}
               variant={getBottleVariant(perfume.id)}
-              className="mx-auto h-full"
+              className="w-full h-full bottle-fade"
             />
           )}
         </div>
-      </div>
 
-      {/* Controlos */}
-      <div className="flex flex-col gap-6 px-6 pb-8 md:flex-row md:items-end md:justify-between md:px-12">
-        <Link
-          href={`/perfumes/${perfume.id}`}
-          className="w-fit text-lg font-medium underline underline-offset-4"
-        >
-          Ver {perfume.name}
-        </Link>
-
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            aria-label="Perfume anterior"
-            onClick={() => go(-1)}
-            className={buttonClass}
-          >
-            ‹
-          </button>
-          <span aria-live="polite" className="text-sm tabular-nums">
-            {pad(index + 1)} de {pad(total)}
-          </span>
-          <button
-            type="button"
-            aria-label="Próximo perfume"
-            onClick={() => go(1)}
-            className={buttonClass}
-          >
-            ›
-          </button>
+        {/* NOME + MARCA — legíveis, secundários */}
+        <div key={`info-${perfume.id}`} className="text-center w-full max-w-md mb-8 info-entrance">
+          <p className="text-sm opacity-70 mb-1">
+            {perfume.brand}
+            {perfume.releaseYear ? ` · ${perfume.releaseYear}` : ""}
+          </p>
+          <h1 className="font-display text-4xl md:text-6xl font-medium tracking-tight leading-[1.05] text-wrap-balance">
+            {perfume.name}
+          </h1>
         </div>
 
-        <form action="/perfumes" role="search" className="w-full md:max-w-xs">
-          <label htmlFor="hero-search" className="sr-only">
-            Pesquisar perfumes
-          </label>
-          <input
-            id="hero-search"
-            name="q"
-            type="search"
-            placeholder="Pesquisar perfumes"
-            className="w-full border-b border-current/50 bg-transparent py-2 text-sm placeholder:text-current/60 focus:border-current focus:outline-none"
-          />
-        </form>
+        {/* PIRÂMIDE OLFATIVA — larguras proporcionais */}
+        <div className="w-full max-w-md mx-auto space-y-3 pyramid-container">
+          {TIERS.map((tier) => {
+            const tierNotes = notes[tier.type];
+            if (tierNotes.length === 0) return null;
+
+            // Porcentagens mais altas para melhor contraste: 40% / 60% / 80%
+            const tierPct = [0.40, 0.60, 0.80][TIERS.indexOf(tier)];
+            const bg = `color-mix(in srgb, ${perfume.liquidColor} ${Math.round(tierPct * 100)}%, #f7f7f5)`;
+            const textColor = readableTextOn(bg);
+
+            return (
+              <div
+                key={tier.type}
+                className="pyramid-tier rounded-xl overflow-hidden ring-1 ring-black/5"
+                style={{ backgroundColor: bg, color: textColor }}
+              >
+                {/* Barra lateral indicando proporção */}
+                <div
+                  className="absolute left-0 top-0 bottom-0 w-1 opacity-40"
+                  style={{ backgroundColor: perfume.liquidColor }}
+                />
+
+                <div className="relative flex flex-col items-center gap-3 px-4 py-5 pl-5">
+                  <div className="text-center w-full">
+                    <p className="text-xs font-medium opacity-90 uppercase tracking-wide">
+                      {tier.label}
+                    </p>
+                    <p className="text-xs opacity-70">{tier.subtitle}</p>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2 w-full">
+                    {tierNotes.map((note) => {
+                      const catColor = CATEGORY_COLORS[note.category];
+                      return (
+                        <span
+                          key={note.id}
+                          title={note.category}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-transform hover:scale-105"
+                          style={{
+                            backgroundColor: `color-mix(in srgb, ${catColor} 22%, transparent)`,
+                            borderColor: `color-mix(in srgb, ${catColor} 45%, transparent)`,
+                            color: catColor,
+                            borderWidth: "1px",
+                            borderStyle: "solid",
+                            boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                          }}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="h-2 w-2 rounded-full"
+                            style={{ backgroundColor: catColor }}
+                          />
+                          {note.name}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Indicador sutil + navegação por teclado */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-xs opacity-50 transition-opacity duration-300 pointer-events-none">
+        <kbd className="px-2 py-1 rounded bg-current/10 border border-current/20">←</kbd>
+        <span className="tabular-nums" aria-live="polite">
+          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+        <kbd className="px-2 py-1 rounded bg-current/10 border border-current/20">→</kbd>
       </div>
     </section>
   );
