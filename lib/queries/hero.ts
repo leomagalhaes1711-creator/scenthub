@@ -10,6 +10,11 @@ const HERO_IDS = [
   "a-men",
   "boss-bottled",
   "cool-water",
+  "bleu-de-chanel",
+  "aventus",
+  "terre-d-hermes",
+  "dior-homme",
+  "acqua-di-gio",
 ];
 
 export async function getHeroItems(): Promise<HeroItem[]> {

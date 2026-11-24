@@ -9,9 +9,13 @@ import RatingStars from "@/components/reviews/rating-stars";
 import UserReview from "@/components/reviews/user-review";
 import CommentList from "@/components/reviews/comment-list";
 import FavoriteButton from "@/components/perfume/favorite-button";
+import SimilarPerfumes from "@/components/perfume/similar-perfumes";
 import { getBottleVariant, readableTextOn } from "@/lib/liquid";
 import { getNotesByPerfumeId } from "@/lib/queries/notes";
-import { getPerfumeById } from "@/lib/queries/perfumes";
+import {
+  getPerfumeById,
+  getSimilarPerfumes,
+} from "@/lib/queries/perfumes";
 
 type PerfumePageProps = {
   params: Promise<{ id: string }>;
@@ -40,6 +44,12 @@ async function PerfumeContent({ params }: PerfumePageProps) {
   }
 
   const notes = await getNotesByPerfumeId(perfume.id);
+
+  // Perfumes similares (mesma categoria dominante)
+  const similar = await getSimilarPerfumes(
+    perfume.id,
+    perfume.liquidCategory,
+  );
 
   // Usuário atual para os comentários
   const supabase = await createClient();
@@ -159,6 +169,14 @@ async function PerfumeContent({ params }: PerfumePageProps) {
         <section className="mt-16 max-w-2xl">
           <CommentList perfumeId={perfume.id} currentUserId={user?.id ?? null} />
         </section>
+
+        <Suspense fallback={<p className="mt-16 text-center text-smoke">A carregar semelhantes...</p>}>
+          <SimilarPerfumes
+            perfumes={similar}
+            currentPerfumeName={perfume.name}
+            isLoggedIn={Boolean(user)}
+          />
+        </Suspense>
       </div>
     </main>
   );

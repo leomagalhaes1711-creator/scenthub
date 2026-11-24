@@ -1,8 +1,9 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { getLiquid, type LiquidEntry } from "@/lib/liquid";
 import { createPublicClient } from "@/lib/supabase/public";
-import type { NoteType } from "@/types/note";
+import type { NoteCategory, NoteType } from "@/types/note";
 import type { Perfume } from "@/types/perfume";
+import { normalize } from "@/lib/perfume-filters";
 
 // Forma de uma linha da tabela perfumes (com a marca incluída)
 type PerfumeRow = {
@@ -134,14 +135,6 @@ export async function getTopRatedPerfumes(limit = 4): Promise<Perfume[]> {
     .slice(0, limit);
 }
 
-// Tira acentos e maiúsculas: "Âmbar" passa a "ambar"
-function normalize(text: string): string {
-  return text
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
-
 // Pesquisa por nome ou marca. Sem termo, devolve todos os perfumes.
 export async function searchPerfumes(query?: string): Promise<Perfume[]> {
   const perfumes = await getAllPerfumes();
@@ -161,4 +154,126 @@ export async function getPerfumeById(id: string): Promise<Perfume | null> {
   const perfumes = await getAllPerfumes();
 
   return perfumes.find((perfume) => perfume.id === id) ?? null;
+}
+
+// Filtros disponíveis para a listagem
+export interface PerfumeFilters {
+  q?: string;
+  category?: NoteCategory;
+  brand?: string;
+  yearFrom?: number;
+  yearTo?: number;
+  minRating?: number;
+  sort?: "name" | "rating" | "popular" | "newest" | "oldest";
+}
+
+// Pesquisa com filtros avançados
+export async function searchPerfumesFiltered(
+  filters: PerfumeFilters,
+): Promise<Perfume[]> {
+  const perfumes = await getAllPerfumes();
+
+  let results = perfumes;
+
+  // Busca por texto (nome ou marca)
+  if (filters.q) {
+    const term = normalize(filters.q.trim());
+    results = results.filter((perfume) =>
+      normalize(`${perfume.name} ${perfume.brand}`).includes(term),
+    );
+  }
+
+  // Filtro por categoria dominante (líquido)
+  if (filters.category) {
+    results = results.filter(
+      (perfume) => perfume.liquidCategory === filters.category,
+    );
+  }
+
+  // Filtro por marca
+  if (filters.brand) {
+    results = results.filter((perfume) =>
+      normalize(perfume.brand).includes(normalize(filters.brand!)),
+    );
+  }
+
+  // Filtro por ano
+  if (filters.yearFrom) {
+    results = results.filter(
+      (perfume) => perfume.releaseYear && perfume.releaseYear >= filters.yearFrom!,
+    );
+  }
+  if (filters.yearTo) {
+    results = results.filter(
+      (perfume) => perfume.releaseYear && perfume.releaseYear <= filters.yearTo!,
+    );
+  }
+
+  // Filtro por avaliação mínima
+  if (filters.minRating) {
+    results = results.filter(
+      (perfume) => perfume.ratingAverage >= filters.minRating!,
+    );
+  }
+
+  // Ordenação
+  const sort = filters.sort ?? "name";
+  results.sort((a, b) => {
+    switch (sort) {
+      case "rating":
+        return b.ratingAverage - a.ratingAverage || b.ratingCount - a.ratingCount;
+      case "popular":
+        return b.ratingCount - a.ratingCount || a.name.localeCompare(b.name, "pt");
+      case "newest":
+        return (b.releaseYear ?? 0) - (a.releaseYear ?? 0);
+      case "oldest":
+        return (a.releaseYear ?? 0) - (b.releaseYear ?? 0);
+      case "name":
+      default:
+        return a.name.localeCompare(b.name, "pt");
+    }
+  });
+
+  return results;
+}
+
+// Marcas disponíveis (para o filtro)
+export async function getBrands(): Promise<string[]> {
+  const perfumes = await getAllPerfumes();
+  const brands = [...new Set(perfumes.map((p) => p.brand))].filter(Boolean);
+  return brands.sort((a, b) => a.localeCompare(b, "pt"));
+}
+
+// Categorias disponíveis (para o filtro)
+export function getCategories(): NoteCategory[] {
+  return [
+    "Cítrico",
+    "Especiado",
+    "Aromático",
+    "Floral",
+    "Amadeirado",
+    "Doce",
+    "Âmbar",
+    "Aquático",
+    "Verde",
+    "Fumado",
+  ];
+}
+
+// Perfumes similares: mesma categoria dominante (liquidCategory), exceto o atual
+export async function getSimilarPerfumes(
+  perfumeId: string,
+  liquidCategory: NoteCategory | null,
+  limit = 4,
+): Promise<Perfume[]> {
+  if (!liquidCategory) return [];
+
+  const all = await getAllPerfumes();
+
+  return all
+    .filter(
+      (p) => p.id !== perfumeId && p.liquidCategory === liquidCategory,
+    )
+    .sort((a, b) => b.ratingAverage - a.ratingAverage || b.ratingCount - a.ratingCount)
+    .slice(0, limit);
 }
