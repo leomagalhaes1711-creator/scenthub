@@ -23,19 +23,23 @@ export default function AuthLinks({
 
   const linkClass = mobile
     ? "text-base font-medium text-ink"
-    : "text-sm font-medium text-ink underline-offset-4 hover:underline";
-
-  const buttonClass = mobile
-    ? "rounded-full bg-ink px-5 py-2.5 text-center text-sm font-medium text-paper"
-    : "rounded-full bg-ink px-5 py-2 text-sm font-medium text-paper transition hover:bg-ink/80";
+    : "text-small font-medium text-ink underline underline-offset-4 hover:text-smoke transition-colors focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-paper rounded px-1 -mx-1";
 
   if (user) {
     return (
       <>
-        <Link href="/profile" onClick={onNavigate} className={linkClass}>
+        <Link
+          href="/profile"
+          onClick={onNavigate}
+          className={linkClass}
+        >
           Perfil
         </Link>
-        <button type="button" onClick={onLogout} className={buttonClass}>
+        <button
+          type="button"
+          onClick={onLogout}
+          className={mobile ? "btn-primary w-full" : "btn-secondary"}
+        >
           Sair
         </button>
       </>
@@ -44,10 +48,18 @@ export default function AuthLinks({
 
   return (
     <>
-      <Link href="/login" onClick={onNavigate} className={linkClass}>
+      <Link
+        href="/login"
+        onClick={onNavigate}
+        className={mobile ? "btn-secondary w-full" : linkClass}
+      >
         Entrar
       </Link>
-      <Link href="/register" onClick={onNavigate} className={buttonClass}>
+      <Link
+        href="/register"
+        onClick={onNavigate}
+        className={mobile ? "btn-primary w-full mt-2" : "btn-primary ml-2"}
+      >
         Criar conta
       </Link>
     </>

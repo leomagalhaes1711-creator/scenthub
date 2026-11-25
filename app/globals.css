@@ -6,27 +6,81 @@
 }
 
 @theme inline {
-  /* Nova paleta */
+  /* Paleta base */
   --color-paper: #f7f7f5;
   --color-ink: #16181d;
   --color-smoke: #5f646d;
   --color-mist: #ecece8;
 
-  /* Letras */
+  /* Estados */
+  --color-focus: #e08a1e;
+  --color-error: #c0392b;
+  --color-success: #27ae60;
+  --color-border: rgba(22, 24, 29, 0.08);
+  --color-border-strong: rgba(22, 24, 29, 0.15);
+
+  /* Tipografia */
   --font-sans: var(--font-instrument);
   --font-display: var(--font-bricolage);
   --font-serif: var(--font-bricolage);
+
+  /* Espaçamento consistente */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4rem;     /* 64px */
+
+  /* Border radius */
+  --radius-sm: 0.375rem;  /* 6px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-2xl: 1.5rem;   /* 24px */
 }
 
-body {
-  background-color: var(--background);
-  color: var(--foreground);
+@utility container-page {
+  @apply mx-auto max-w-6xl px-6 md:px-12;
 }
 
-/* ===== ANIMAÇÕES ===== */
+@utility section-base {
+  @apply py-16 md:py-24;
+}
 
-/* Entrada do conteúdo do hero (legacy - mantido para compatibilidade) */
-@keyframes stage-in {
+@utility text-balance {
+  text-wrap: balance;
+}
+
+/* ===== TIPOGRAFIA - Escala consistente ===== */
+@utility text-display-1 {
+  @apply font-display text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.02] text-balance;
+}
+@utility text-display-2 {
+  @apply font-display text-3xl md:text-4xl font-semibold tracking-tight leading-[1.05];
+}
+@utility text-display-3 {
+  @apply font-display text-2xl md:text-3xl font-semibold tracking-tight leading-[1.1];
+}
+@utility text-heading {
+  @apply font-display text-xl md:text-2xl font-semibold tracking-tight leading-[1.15];
+}
+@utility text-body {
+  @apply font-sans text-base leading-[1.65];
+}
+@utility text-body-lg {
+  @apply font-sans text-lg leading-[1.6];
+}
+@utility text-small {
+  @apply font-sans text-sm leading-[1.55];
+}
+@utility text-caption {
+  @apply font-sans text-xs font-medium leading-[1.45] tracking-wide;
+}
+
+/* ===== ANIMAÇÕES - Uma orquestrada ===== */
+@keyframes fade-in-up {
   from {
     opacity: 0;
     transform: translateY(16px);
@@ -37,15 +91,15 @@ body {
   }
 }
 
-.stage-in {
-  animation: stage-in 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* Nova: garrafa fade-in suave */
-@keyframes bottle-fade {
+@keyframes slide-in-right {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateX(24px);
   }
   to {
     opacity: 1;
@@ -53,65 +107,395 @@ body {
   }
 }
 
-.bottle-fade {
-  animation: bottle-fade 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.animate-reveal {
+  animation: fade-in-up 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Nova: info (nome/marca) fade-in */
-@keyframes info-fade {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.animate-reveal-delay-1 { animation-delay: 100ms; }
+.animate-reveal-delay-2 { animation-delay: 200ms; }
+.animate-reveal-delay-3 { animation-delay: 300ms; }
+.animate-reveal-delay-4 { animation-delay: 400ms; }
+
+.animate-fade-in {
+  animation: fade-in 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.info-entrance {
-  animation: info-fade 400ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
-}
-
-/* Nova: pirâmide revela em cascata */
-@keyframes pyramid-reveal {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.pyramid-tier:nth-child(1) {
-  animation: pyramid-reveal 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.pyramid-tier:nth-child(2) {
-  animation: pyramid-reveal 400ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
-}
-.pyramid-tier:nth-child(3) {
-  animation: pyramid-reveal 400ms cubic-bezier(0.22, 1, 0.36, 1) 160ms both;
-}
-
-/* Container da pirâmide para stagger funcionar */
-.pyramid-container {
-  /* filhos .pyramid-tier recebem delay escalonado */
+.animate-slide-in-right {
+  animation: slide-in-right 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .stage-in,
-  .bottle-fade,
-  .info-entrance,
-  .pyramid-tier {
+  .animate-reveal,
+  .animate-reveal-delay-1,
+  .animate-reveal-delay-2,
+  .animate-reveal-delay-3,
+  .animate-reveal-delay-4,
+  .animate-fade-in,
+  .animate-slide-in-right {
     animation: none !important;
+    opacity: 1;
+    transform: none;
   }
 }
 
-/* Focus visível para navegação por teclado (hero kbd) */
-kbd:focus-visible {
-  outline: 2px solid currentColor;
+/* ===== FOCUS VISIBLE GLOBAL ===== */
+*:focus-visible {
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+/* Exceção para botões com ring */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-focus), 0 0 0 4px var(--color-paper);
+}
+
+/* ===== UTILIDADES DE ESTADO ===== */
+.skeleton {
+  background-color: var(--color-mist);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: var(--radius-lg);
+}
+
+.skeleton-text {
+  height: 1rem;
+  background-color: var(--color-mist);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: var(--radius-md);
+  width: 75%;
+}
+
+.skeleton-text-short {
+  height: 1rem;
+  background-color: var(--color-mist);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: var(--radius-md);
+  width: 50%;
+}
+
+.skeleton-title {
+  height: 2rem;
+  background-color: var(--color-mist);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: var(--radius-md);
+  width: 33%;
+}
+
+.skeleton-image {
+  aspect-ratio: 4/5;
+  background-color: var(--color-mist);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: var(--radius-xl);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ===== UTILIDADES DE LAYOUT ===== */
+.grid-perfumes {
+  @apply grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4;
+}
+
+.section-header {
+  @apply mb-12 md:mb-16 flex items-baseline justify-between gap-4;
+}
+
+.section-title {
+  @apply text-display-2 text-ink;
+}
+
+.section-link {
+  @apply text-small font-medium text-ink underline underline-offset-4 hover:text-smoke transition-colors;
+}
+
+/* ===== CARD BASE ===== */
+.card-perfume {
+  display: block;
+}
+
+.card-perfume-image {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-mist);
+}
+
+.card-perfume-image img {
+  object-fit: contain;
+  transition: opacity 300ms ease-out;
+}
+
+.card-perfume-image .bottle-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.card-perfume-image .bottle-svg svg {
+  width: 100%;
+  height: 100%;
+}
+
+.card-perfume-info {
+  margin-top: 1rem;
+}
+
+.card-perfume-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--color-ink);
+  transition: color 0.2s;
+}
+
+.card-perfume:hover .card-perfume-name {
+  text-decoration: underline;
+}
+
+.card-perfume-brand {
+  margin-top: 0.25rem;
+  @apply text-small text-smoke;
+}
+
+.card-perfume-rating {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  @apply text-small text-smoke;
+}
+
+/* ===== BOTÕES ===== */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1.5rem;
+  @apply text-small font-medium text-paper bg-ink transition-all duration-200;
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.btn-primary:hover {
+  background-color: #0d0f13;
+}
+
+.btn-primary:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-focus), 0 0 0 4px var(--color-paper);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1.5rem;
+  @apply text-small font-medium text-ink transition-all duration-200;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-mist);
+  border-color: var(--color-border-strong);
+}
+
+.btn-secondary:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-focus), 0 0 0 4px var(--color-paper);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-xl);
+  padding: 0.5rem 1rem;
+  @apply text-small font-medium text-smoke transition-colors;
+}
+
+.btn-ghost:hover {
+  color: var(--color-ink);
+  background-color: var(--color-mist);
+}
+
+.btn-ghost:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-focus), 0 0 0 4px var(--color-paper);
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: var(--radius-xl);
+  @apply text-smoke transition-colors;
+}
+
+.btn-icon:hover {
+  color: var(--color-ink);
+  background-color: var(--color-mist);
+}
+
+.btn-icon:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-focus), 0 0 0 4px var(--color-paper);
+}
+
+/* ===== INPUTS ===== */
+.input-base {
+  width: 100%;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-paper);
+  padding: 0.75rem 1rem;
+  color: var(--color-ink);
+  transition: all 200ms;
+}
+
+.input-base::placeholder {
+  color: var(--color-smoke);
+  opacity: 0.6;
+}
+
+.input-base:focus {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 2px var(--color-focus);
+  outline: none;
+}
+
+.input-base:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.label-base {
+  margin-bottom: 0.5rem;
+  display: block;
+  @apply text-small font-medium text-ink;
+}
+
+/* ===== NAVIGAÇÃO ===== */
+.nav-link {
+  @apply text-small font-medium text-ink underline underline-offset-4 hover:text-smoke transition-colors;
+}
+
+.nav-link-active {
+  @apply text-ink font-semibold;
+}
+
+/* ===== LAYOUT UTILITIES ===== */
+.container-page {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 72rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+.section-base {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-base {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.grid-perfumes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid-perfumes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-perfumes {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .section-header {
+    margin-bottom: 4rem;
+  }
+}
+
+.section-title {
+  @apply text-display-2 text-ink;
+}
+
+.section-link {
+  @apply text-small font-medium text-ink underline underline-offset-4 hover:text-smoke transition-colors;
+}
+
+/* ===== SCROLLBAR ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-mist) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-mist);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-smoke);
 }

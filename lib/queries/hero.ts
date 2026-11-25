@@ -20,13 +20,15 @@ const HERO_IDS = [
 export async function getHeroItems(): Promise<HeroItem[]> {
   const all = await searchPerfumes();
 
+  // Filtra apenas perfumes que têm foto (imageUrl)
   let perfumes = HERO_IDS.map((id) =>
     all.find((perfume) => perfume.id === id),
-  ).filter((perfume): perfume is Perfume => Boolean(perfume));
+  ).filter((perfume): perfume is Perfume => Boolean(perfume?.imageUrl));
 
-  // Se a lista escolhida não existir na base de dados, usa os populares
+  // Se a lista escolhida não existir na base de dados, usa os populares com foto
   if (perfumes.length < 3) {
-    perfumes = await getPopularPerfumes(6);
+    const popular = await getPopularPerfumes(12);
+    perfumes = popular.filter((p) => p.imageUrl);
   }
 
   return Promise.all(

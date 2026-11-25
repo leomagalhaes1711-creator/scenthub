@@ -6,64 +6,93 @@ import FavoriteButton from "@/components/perfume/favorite-button";
 import { getBottleVariant, getTint } from "@/lib/liquid";
 import type { Perfume } from "@/types/perfume";
 
+interface PerfumeCardProps {
+  perfume: Perfume;
+  isLoggedIn?: boolean;
+  priority?: boolean;
+}
+
 export default function PerfumeCard({
   perfume,
   isLoggedIn = false,
-}: { perfume: Perfume; isLoggedIn?: boolean }) {
-  // Com foto e cor medida: usa a cor do fundo da foto.
-  // Caso contrário: usa o tom suave do líquido.
+  priority = false,
+}: PerfumeCardProps) {
+  // Background: cor do fundo da foto se houver, senão tom suave do líquido
   const background =
-    (perfume.imageUrl && perfume.imageBackground) ||
-    getTint(perfume.liquidColor);
+    (perfume.imageUrl && perfume.imageBackground) || getTint(perfume.liquidColor);
+  const hasPhoto = Boolean(perfume.imageUrl);
 
   return (
-    <Link href={`/perfumes/${perfume.id}`} className="group block">
-      <div
-        className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-md"
-        style={{ backgroundColor: background }}
-      >
-        {perfume.imageUrl ? (
-          <Image
-            src={perfume.imageUrl}
-            alt={`Frasco do perfume ${perfume.name}`}
-            fill
-            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-            className={`object-contain transition duration-500 group-hover:scale-105 motion-reduce:transition-none ${
-              perfume.imageBackground ? "" : "p-8 mix-blend-multiply"
-            }`}
-          />
-        ) : (
-          <PerfumeBottle
-            color={perfume.liquidColor}
-            variant={getBottleVariant(perfume.id)}
-            className="h-3/5 transition duration-500 group-hover:scale-105 motion-reduce:transition-none"
-          />
-        )}
+    <article className="card-perfume">
+      <Link href={`/perfumes/${perfume.id}`} className="block group" aria-label={`${perfume.name} por ${perfume.brand}`}>
+        {/* Imagem do frasco */}
+        <div className="card-perfume-image">
+          {hasPhoto ? (
+            <Image
+              src={perfume.imageUrl!}
+              alt={`Frasco do perfume ${perfume.name}`}
+              fill
+              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+              priority={priority}
+              className={`object-contain transition-opacity duration-300 ease-out group-hover:opacity-90 ${
+                perfume.imageBackground ? "" : "p-8 mix-blend-multiply"
+              }`}
+            />
+          ) : (
+            <PerfumeBottle
+              color={perfume.liquidColor}
+              variant={getBottleVariant(perfume.id)}
+              className="bottle-svg"
+            />
+          )}
 
-        {/* Botão de favorito no canto superior direito da imagem */}
-        <div className="absolute top-2 right-2 z-10">
-          <FavoriteButton perfumeId={perfume.id} isLoggedIn={isLoggedIn} />
+          {/* Botão favorito - top right */}
+          <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <FavoriteButton perfumeId={perfume.id} isLoggedIn={isLoggedIn} />
+          </div>
+
+          {/* Badge de avaliação - bottom left */}
+          {perfume.ratingCount > 0 && (
+            <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm text-paper text-xs font-medium">
+              <RatingStars value={perfume.ratingAverage} size="xs" className="text-yellow-400" />
+              <span className="whitespace-nowrap">{perfume.ratingAverage.toFixed(1)}</span>
+            </div>
+          )}
         </div>
-      </div>
 
-      <h3 className="mt-3 font-display text-lg font-medium leading-tight text-ink underline-offset-4 group-hover:underline">
-        {perfume.name}
-      </h3>
-      <p className="text-sm text-smoke">{perfume.brand}</p>
+        {/* Info do perfume */}
+        <div className="card-perfume-info">
+          <h3 className="card-perfume-name">{perfume.name}</h3>
+          <p className="card-perfume-brand">{perfume.brand}</p>
 
-      <div className="mt-1 flex items-center gap-2 text-sm text-smoke">
-        {perfume.ratingCount > 0 ? (
-          <>
-            <RatingStars value={perfume.ratingAverage} size="sm" />
-            <span>
-              {perfume.ratingAverage.toFixed(1)} (
-              {perfume.ratingCount.toLocaleString("pt-PT")})
-            </span>
-          </>
-        ) : (
-          <span>Sem avaliações</span>
-        )}
+          <div className="card-perfume-rating" aria-label={`Avaliação média ${perfume.ratingAverage.toFixed(1)} de 5, ${perfume.ratingCount} avaliações`}>
+            {perfume.ratingCount > 0 ? (
+              <>
+                <RatingStars value={perfume.ratingAverage} size="sm" />
+                <span className="text-smoke">
+                  {perfume.ratingAverage.toFixed(1)} ({perfume.ratingCount.toLocaleString("pt-PT")})
+                </span>
+              </>
+            ) : (
+              <span className="text-smoke">Sem avaliações</span>
+            )}
+          </div>
+        </div>
+      </Link>
+    </article>
+  );
+}
+
+/* Skeleton para loading state */
+export function PerfumeCardSkeleton() {
+  return (
+    <article className="card-perfume" aria-hidden="true">
+      <div className="card-perfume-image skeleton-image" />
+      <div className="card-perfume-info">
+        <div className="skeleton-title" />
+        <div className="skeleton-text-short mt-2" />
+        <div className="skeleton-text-short mt-3" />
       </div>
-    </Link>
+    </article>
   );
 }

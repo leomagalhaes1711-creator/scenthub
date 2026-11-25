@@ -1,5 +1,6 @@
 import Link from "next/link";
-import PerfumeCard from "@/components/perfume/perfume-card";
+import { Suspense } from "react";
+import PerfumeCard, { PerfumeCardSkeleton } from "@/components/perfume/perfume-card";
 import type { Perfume } from "@/types/perfume";
 
 type PerfumeSectionProps = {
@@ -8,6 +9,7 @@ type PerfumeSectionProps = {
   href?: string;
   emptyMessage?: string;
   isLoggedIn?: boolean;
+  loading?: boolean;
 };
 
 export default function PerfumeSection({
@@ -16,32 +18,63 @@ export default function PerfumeSection({
   href = "/perfumes",
   emptyMessage = "Ainda não há perfumes para mostrar.",
   isLoggedIn = false,
+  loading = false,
 }: PerfumeSectionProps) {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16">
-      <div className="mb-8 flex items-baseline justify-between gap-4">
-        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+    <section className="section-base" aria-labelledby={title.toLowerCase().replace(/\s+/g, "-")}>
+      <header className="section-header">
+        <h2 id={title.toLowerCase().replace(/\s+/g, "-")} className="section-title">
           {title}
         </h2>
-        <Link
-          href={href}
-          className="text-sm font-medium text-ink underline underline-offset-4"
-        >
-          Ver todos
-        </Link>
-      </div>
+        {href && (
+          <Link href={href} className="section-link">
+            Ver todos
+          </Link>
+        )}
+      </header>
 
-      {perfumes.length > 0 ? (
-        <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
-          {perfumes.map((perfume) => (
-            <PerfumeCard key={perfume.id} perfume={perfume} isLoggedIn={isLoggedIn} />
-          ))}
-        </div>
+      {loading ? (
+        <Suspense fallback={
+          <div className="grid-perfumes" role="status" aria-label="A carregar perfumes">
+            {[...Array(8)].map((_, i) => <PerfumeCardSkeleton key={i} />)}
+          </div>
+        }>
+          <PerfumeGrid perfumes={perfumes} isLoggedIn={isLoggedIn} />
+        </Suspense>
       ) : (
-        <p className="border-t border-ink/10 py-10 text-smoke">
-          {emptyMessage}
-        </p>
+        <PerfumeGrid perfumes={perfumes} isLoggedIn={isLoggedIn} emptyMessage={emptyMessage} />
       )}
     </section>
+  );
+}
+
+function PerfumeGrid({
+  perfumes,
+  isLoggedIn,
+  emptyMessage,
+}: {
+  perfumes: Perfume[];
+  isLoggedIn?: boolean;
+  emptyMessage?: string;
+}) {
+  if (perfumes.length === 0) {
+    return (
+      <div className="border-t border-ink/10 py-16 text-center" role="status">
+        <p className="text-smoke">{emptyMessage}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid-perfumes" role="list" aria-label="Lista de perfumes">
+      {perfumes.map((perfume, index) => (
+        <PerfumeCard
+          key={perfume.id}
+          perfume={perfume}
+          isLoggedIn={isLoggedIn ?? false}
+          priority={index < 4}
+        />
+      ))}
+    </div>
   );
 }

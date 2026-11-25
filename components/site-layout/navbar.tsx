@@ -32,6 +32,11 @@ export default function Navbar() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Fechar menu mobile ao navegar
+  const handleLinkClick = () => {
+    if (open) setOpen(false);
+  };
+
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -41,23 +46,25 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink/10 bg-paper">
-      <nav className="flex h-[72px] items-center justify-between px-6 md:px-12">
+    <header className="sticky top-0 z-50 border-b border-ink/10 bg-paper/95 backdrop-blur-sm" role="banner">
+      <nav className="flex h-[72px] items-center justify-between px-6 md:px-12" aria-label="Navegação principal">
         <Link
           href="/"
           onClick={() => setOpen(false)}
-          className="font-display text-2xl font-semibold tracking-tight text-ink"
+          className="font-display text-2xl font-semibold tracking-tight text-ink focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-paper rounded-md px-2 -mx-2"
+          aria-label="ScentHub - Página inicial"
         >
           ScentHub
         </Link>
 
         {/* Menu para ecrãs grandes */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 md:flex" role="navigation" aria-label="Navegação principal">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-ink underline-offset-4 hover:underline"
+              onClick={handleLinkClick}
+              className="text-small font-medium text-ink underline underline-offset-4 hover:text-smoke transition-colors focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-paper rounded-md px-1 -mx-1"
             >
               {link.label}
             </Link>
@@ -65,7 +72,7 @@ export default function Navbar() {
           <AuthLinks
             user={user}
             ready={authReady}
-            onNavigate={() => setOpen(false)}
+            onNavigate={handleLinkClick}
             onLogout={handleLogout}
           />
         </div>
@@ -73,23 +80,38 @@ export default function Navbar() {
         {/* Botão do menu para telemóvel */}
         <button
           type="button"
-          className="text-sm font-medium text-ink md:hidden"
+          className="btn-icon md:hidden"
           onClick={() => setOpen(!open)}
           aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
-          {open ? "Fechar" : "Menu"}
+          {open ? (
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
         </button>
       </nav>
 
       {/* Menu aberto no telemóvel */}
       {open && (
-        <div className="flex flex-col gap-4 border-t border-ink/10 px-6 py-5 md:hidden">
+        <div
+          id="mobile-menu"
+          className="md:hidden animate-fade-in border-t border-ink/10 px-6 py-5"
+          role="navigation"
+          aria-label="Menu móvel"
+        >
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => setOpen(false)}
-              className="text-base font-medium text-ink"
+              onClick={handleLinkClick}
+              className="text-base font-medium text-ink py-2 hover:text-smoke transition-colors focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-paper rounded-md px-2 -mx-2"
             >
               {link.label}
             </Link>
@@ -98,7 +120,7 @@ export default function Navbar() {
             mobile
             user={user}
             ready={authReady}
-            onNavigate={() => setOpen(false)}
+            onNavigate={handleLinkClick}
             onLogout={handleLogout}
           />
         </div>

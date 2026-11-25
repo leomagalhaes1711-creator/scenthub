@@ -1,6 +1,6 @@
 type RatingStarsProps = {
   value: number; // de 0 a 5
-  size?: "sm" | "md";
+  size?: "xs" | "sm" | "md";
   className?: string; // cor das estrelas (por defeito, a tinta)
 };
 
@@ -10,7 +10,7 @@ export default function RatingStars({
   className = "text-ink",
 }: RatingStarsProps) {
   const percent = (Math.min(Math.max(value, 0), 5) / 5) * 100;
-  const textSize = size === "sm" ? "text-sm" : "text-xl";
+  const textSize = size === "xs" ? "text-xs" : size === "sm" ? "text-sm" : "text-xl";
 
   return (
     <span
