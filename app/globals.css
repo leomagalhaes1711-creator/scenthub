@@ -231,7 +231,7 @@ a:focus-visible,
 }
 
 .card-perfume-image img {
-  object-fit: contain;
+  object-fit: cover;
   transition: opacity 300ms ease-out;
 }
 

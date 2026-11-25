@@ -220,7 +220,7 @@ export default function HeroStage({ items }: { items: HeroItem[] }) {
           style={{ minHeight: "50vh" }}
         >
           {hasPhoto ? (
-            <div className="relative w-full max-w-xs mx-auto">
+            <div className="relative w-full max-w-xs mx-auto aspect-[4/5]" style={{ maxHeight: "520px" }}>
               {/* Gradiente de fade inferior na própria imagem - funde com o fundo da página */}
               <div
                 className="absolute bottom-0 left-0 right-0 h-1/2 pointer-events-none"
@@ -236,7 +236,7 @@ export default function HeroStage({ items }: { items: HeroItem[] }) {
                 fill
                 sizes="(min-width: 768px) 45vw, 90vw"
                 priority
-                className={`object-contain transition-opacity duration-500 ease-out ${
+                className={`object-cover transition-opacity duration-500 ease-out ${
                   perfume.imageBackground ? "" : "mix-blend-multiply"
                 }`}
                 style={{

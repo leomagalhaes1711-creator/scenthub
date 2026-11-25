@@ -125,7 +125,7 @@ async function PerfumeContent({ params }: PerfumePageProps) {
                   alt={`Frasco do perfume ${perfume.name}`}
                   fill
                   sizes="(min-width: 768px) 40vw, 90vw"
-                  className={`object-contain [mask-image:radial-gradient(closest-side,black_72%,transparent)] ${
+                  className={`object-cover [mask-image:radial-gradient(closest-side,black_72%,transparent)] ${
                     perfume.imageBackground ? "" : "mix-blend-multiply"
                   }`}
                 />

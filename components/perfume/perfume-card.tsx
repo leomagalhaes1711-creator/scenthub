@@ -34,8 +34,8 @@ export default function PerfumeCard({
               fill
               sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
               priority={priority}
-              className={`object-contain transition-opacity duration-300 ease-out group-hover:opacity-90 ${
-                perfume.imageBackground ? "" : "p-8 mix-blend-multiply"
+              className={`object-cover transition-opacity duration-300 ease-out group-hover:opacity-90 ${
+                perfume.imageBackground ? "" : "mix-blend-multiply"
               }`}
             />
           ) : (
