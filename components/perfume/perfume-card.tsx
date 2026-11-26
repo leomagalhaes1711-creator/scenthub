@@ -21,26 +21,28 @@ export default function PerfumeCard({
   const hasPhoto = Boolean(perfume.imageUrl);
 
   return (
-    <article className="card-perfume">
+    <article className="card-perfume group">
       <Link href={`/perfumes/${perfume.id}`} className="block group" aria-label={`${perfume.name} por ${perfume.brand}`}>
-        {/* Imagem do frasco - usando o componente PerfumeImage com design do hero */}
-        <PerfumeImage
-          perfume={perfume}
-          priority={priority}
-        />
+        {/* Imagem do frasco - usando o componente PerfumeImage com design limpo */}
+        <div className="card-perfume-image">
+          <PerfumeImage
+            perfume={perfume}
+            priority={priority}
+          />
 
-        {/* Botão favorito - top right */}
-        <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <FavoriteButton perfumeId={perfume.id} isLoggedIn={isLoggedIn} />
-        </div>
-
-        {/* Badge de avaliação - bottom left */}
-        {perfume.ratingCount > 0 && (
-          <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm text-paper text-xs font-medium">
-            <RatingStars value={perfume.ratingAverage} size="xs" className="text-yellow-400" />
-            <span className="whitespace-nowrap">{perfume.ratingAverage.toFixed(1)}</span>
+          {/* Botão favorito - top right */}
+          <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <FavoriteButton perfumeId={perfume.id} isLoggedIn={isLoggedIn} />
           </div>
-        )}
+
+          {/* Badge de avaliação - bottom left */}
+          {perfume.ratingCount > 0 && (
+            <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm text-paper text-xs font-medium">
+              <RatingStars value={perfume.ratingAverage} size="xs" className="text-yellow-400" />
+              <span className="whitespace-nowrap">{perfume.ratingAverage.toFixed(1)}</span>
+            </div>
+          )}
+        </div>
 
         {/* Info do perfume */}
         <div className="card-perfume-info">

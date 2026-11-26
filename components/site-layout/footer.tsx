@@ -12,7 +12,7 @@ export default function Footer() {
     return 2026; // fallback para SSR
   });
 
-  // Garante que o ano é atualizado no client-side
+  // Garante que o ano é calculado no client-side
   useEffect(() => {
     setYear(new Date().getFullYear());
   }, []);

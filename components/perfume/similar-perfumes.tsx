@@ -16,22 +16,26 @@ export default function SimilarPerfumes({
   if (perfumes.length === 0) return null;
 
   return (
-    <section className="mt-16">
+    <section className="mt-16 animate-reveal">
       <div className="mb-8 flex items-baseline justify-between gap-4">
-        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+        <h2 className="text-display-3 text-ink">
           Semelhantes a {currentPerfumeName}
         </h2>
         <Link
           href="/perfumes"
-          className="text-sm font-medium text-ink underline underline-offset-4"
+          className="section-link"
         >
           Ver todos os perfumes
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4">
+      <div className="grid-perfumes" role="list" aria-label="Perfumes semelhantes">
         {perfumes.map((perfume) => (
-          <PerfumeCard key={perfume.id} perfume={perfume} isLoggedIn={isLoggedIn} />
+          <PerfumeCard
+            key={perfume.id}
+            perfume={perfume}
+            isLoggedIn={isLoggedIn}
+          />
         ))}
       </div>
     </section>

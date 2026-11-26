@@ -81,11 +81,13 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
       {/* Botão mobile para abrir filtros */}
       <button
         type="button"
-        className="lg:hidden w-full mb-6 rounded-xl border border-ink/15 bg-white p-4 text-left transition hover:border-ink/30"
+        className="lg:hidden w-full mb-6 rounded-xl border border-ink/15 bg-white p-4 text-left transition hover:border-ink/30 focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2"
         onClick={() => setIsOpen(true)}
+        aria-expanded={isOpen}
+        aria-controls="filter-sidebar"
       >
         <div className="flex items-center gap-2">
-          <svg className="h-5 w-5 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-5 w-5 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 18a1 1 0 011-1h6a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           </svg>
@@ -100,10 +102,12 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
 
       {/* Sidebar desktop + mobile drawer */}
       <aside
+        id="filter-sidebar"
         className={`fixed inset-0 z-50 lg:static lg:z-auto transition-transform duration-300 ease-out ${
           isOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         }`}
         style={{ width: "100%", maxWidth: "320px" }}
+        aria-label="Filtros de perfumes"
       >
         {/* Overlay mobile */}
         {isOpen && (
@@ -118,6 +122,8 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
           className={`relative bg-white lg:border lg:border-ink/10 lg:rounded-xl lg:p-6 ${
             isOpen ? "w-full max-w-sm" : "lg:w-full"
           }`}
+          role="complementary"
+          aria-label="Filtros de perfumes"
         >
           {/* Header mobile */}
           <div className="lg:hidden flex items-center justify-between p-4 border-b border-ink/10">
@@ -125,9 +131,10 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="p-1 text-smoke hover:text-ink transition"
+              className="p-1 text-smoke hover:text-ink transition focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 rounded"
+              aria-label="Fechar filtros"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -146,13 +153,13 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
                 value={localFilters.q ?? ""}
                 onChange={(e) => handleChange("q", e.target.value)}
                 placeholder="Pesquisar perfume ou marca..."
-                className="w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-smoke/60 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/20"
+                className="w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-smoke/60 focus:border-focus focus:ring-2 focus:ring-focus/20 focus:outline-none"
               />
             </div>
 
             {/* Categoria */}
             <div>
-              <h3 className="mb-3 text-sm font-medium text-ink">Categoria</h3>
+              <h3 className="mb-3 text-small font-medium text-ink">Categoria</h3>
               <div className="flex flex-wrap gap-2">
                 {categories.map((cat) => (
                   <label
@@ -178,7 +185,7 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
 
             {/* Marca */}
             <div>
-              <h3 className="mb-3 text-sm font-medium text-ink">Marca</h3>
+              <h3 className="mb-3 text-small font-medium text-ink">Marca</h3>
               <div className="flex flex-wrap gap-2">
                 {brands.map((brand) => (
                   <label
@@ -205,7 +212,7 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
             {/* Ano */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label htmlFor="yearFrom" className="mb-1.5 block text-sm font-medium text-ink">
+                <label htmlFor="yearFrom" className="mb-1.5 block text-small font-medium text-ink">
                   Ano mínimo
                 </label>
                 <input
@@ -217,11 +224,11 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
                   value={localFilters.yearFrom ?? ""}
                   onChange={(e) => handleChange("yearFrom", e.target.value)}
                   placeholder="Ex: 1990"
-                  className="w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-smoke/60 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/20"
+                  className="w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-smoke/60 focus:border-ink focus:ring-2 focus:ring-focus/20 focus:outline-none"
                 />
               </div>
               <div>
-                <label htmlFor="yearTo" className="mb-1.5 block text-sm font-medium text-ink">
+                <label htmlFor="yearTo" className="mb-1.5 block text-small font-medium text-ink">
                   Ano máximo
                 </label>
                 <input
@@ -233,14 +240,14 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
                   value={localFilters.yearTo ?? ""}
                   onChange={(e) => handleChange("yearTo", e.target.value)}
                   placeholder="Ex: 2020"
-                  className="w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-smoke/60 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/20"
+                  className="w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder:text-smoke/60 focus:border-ink focus:ring-2 focus:ring-focus/20 focus:outline-none"
                 />
               </div>
             </div>
 
             {/* Avaliação mínima */}
             <div>
-              <h3 className="mb-3 text-sm font-medium text-ink">Avaliação mínima</h3>
+              <h3 className="mb-3 text-small font-medium text-ink">Avaliação mínima</h3>
               <div className="flex flex-wrap gap-2">
                 {[3, 3.5, 4, 4.5].map((rating) => (
                   <label
@@ -268,7 +275,7 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
 
             {/* Ordenação */}
             <div>
-              <label htmlFor="sort" className="mb-1.5 block text-sm font-medium text-ink">
+              <label htmlFor="sort" className="mb-1.5 block text-small font-medium text-ink">
                 Ordenar por
               </label>
               <select
@@ -276,7 +283,7 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
                 name="sort"
                 value={localFilters.sort ?? "name"}
                 onChange={(e) => handleChange("sort", e.target.value)}
-                className="w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/20"
+                className="w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-ink focus:border-focus focus:ring-2 focus:ring-focus/20 focus:outline-none"
               >
                 <option value="name">Nome (A-Z)</option>
                 <option value="rating">Melhor avaliação</option>
@@ -290,7 +297,7 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
             <div className="flex flex-wrap gap-3 pt-4 border-t border-ink/10">
               <button
                 type="submit"
-                className="flex-1 rounded-full bg-ink px-6 py-2.5 text-sm font-medium text-paper transition hover:bg-black"
+                className="flex-1 btn-primary"
               >
                 Aplicar
               </button>
@@ -298,7 +305,7 @@ export default function FilterSidebar({ brands, currentFilters }: FilterSidebarP
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="flex-1 rounded-full border border-ink px-6 py-2.5 text-sm font-medium text-ink transition hover:bg-ink/5"
+                  className="flex-1 btn-secondary"
                 >
                   Limpar
                 </button>

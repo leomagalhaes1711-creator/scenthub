@@ -38,7 +38,7 @@ export default function PerfumeImage({
           alt={`Frasco do perfume ${perfume.name}`}
           fill
           sizes="(min-width: 768px) 45vw, 90vw"
-          priority={false}
+          priority={priority}
           className="object-cover transition-opacity duration-300 ease-out"
           style={{ borderRadius: "12px" }}
         />

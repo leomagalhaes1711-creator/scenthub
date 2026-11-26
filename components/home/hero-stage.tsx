@@ -61,8 +61,8 @@ export default function HeroStage({ items }: { items: HeroItem[] }) {
   const baseColor = (perfume.imageUrl && perfume.imageBackground) || perfume.liquidColor;
   const text = readableTextOn(baseColor);
 
-  // Gradiente estendido: cor da imagem no topo → papel no fundo (cobre área da imagem)
-  const backgroundGradient = `linear-gradient(180deg, ${baseColor} 0%, ${baseColor} 55%, #f7f7f5 100%)`;
+  // Gradiente sutil: cor da imagem no topo → papel no fundo
+  const backgroundGradient = `linear-gradient(180deg, ${baseColor} 0%, ${baseColor} 30%, #f7f7f5 100%)`;
 
   // Tem foto?
   const hasPhoto = Boolean(perfume.imageUrl);
@@ -133,7 +133,6 @@ export default function HeroStage({ items }: { items: HeroItem[] }) {
               if (tierNotes.length === 0) return null;
 
               // Backgrounds mais escuros/saturados para contraste garantido
-              // Usamos a cor do líquido diretamente com menos papel
               const tierPct = [0.75, 0.85, 0.95][tierIndex];
               const bg = `color-mix(in srgb, ${perfume.liquidColor} ${Math.round(tierPct * 100)}%, #16181d)`;
               const textColor = "#ffffff"; // Sempre branco sobre fundo escuro
@@ -159,11 +158,11 @@ export default function HeroStage({ items }: { items: HeroItem[] }) {
                     <div className="flex items-center gap-3">
                       <span
                         className="text-caption uppercase tracking-widest font-semibold"
-                        style={{ color: labelColor }}
+                        style={{ color: "#ffffff" }}
                       >
                         {tier.label}
                       </span>
-                      <span className="text-caption" style={{ color: subtitleColor }}>
+                      <span className="text-caption" style={{ color: "rgba(255,255,255,0.85)" }}>
                         {tier.subtitle}
                       </span>
                     </div>

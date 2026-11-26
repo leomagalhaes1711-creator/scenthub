@@ -1,4 +1,4 @@
-import { CATEGORY_COLORS, readableTextOn } from "@/lib/liquid";
+import { CATEGORY_COLORS } from "@/lib/liquid";
 import type { NoteType, PerfumeNotesGrouped } from "@/types/note";
 
 const INK = "#16181d";
@@ -30,7 +30,7 @@ export default function PerfumeNotes({ notes, liquidColor }: PerfumeNotesProps) 
       {visible.map((tier, tierIndex) => {
         // Backgrounds escuros/saturados para contraste garantido
         const tierPct = [0.75, 0.85, 0.95][tierIndex];
-        const bg = `color-mix(in srgb, ${liquidColor} ${Math.round(tierPct * 100)}%, ${INK})`;
+        const bg = `color-mix(in srgb, ${liquidColor} ${Math.round(tierPct * 100)}%, #16181d)`;
         const textColor = "#ffffff";
         const subtitleColor = "rgba(255,255,255,0.85)";
 
