@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -10,6 +9,7 @@ import UserReview from "@/components/reviews/user-review";
 import CommentList from "@/components/reviews/comment-list";
 import FavoriteButton from "@/components/perfume/favorite-button";
 import SimilarPerfumes from "@/components/perfume/similar-perfumes";
+import PerfumeImage from "@/components/perfume/perfume-image";
 import { getBottleVariant, readableTextOn } from "@/lib/liquid";
 import { getNotesByPerfumeId } from "@/lib/queries/notes";
 import {
@@ -118,25 +118,8 @@ async function PerfumeContent({ params }: PerfumePageProps) {
               </dl>
             </div>
 
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-sm">
-              {perfume.imageUrl ? (
-                <Image
-                  src={perfume.imageUrl}
-                  alt={`Frasco do perfume ${perfume.name}`}
-                  fill
-                  sizes="(min-width: 768px) 40vw, 90vw"
-                  className={`object-cover [mask-image:radial-gradient(closest-side,black_72%,transparent)] ${
-                    perfume.imageBackground ? "" : "mix-blend-multiply"
-                  }`}
-                />
-              ) : (
-                <PerfumeBottle
-                  color={perfume.liquidColor}
-                  variant={getBottleVariant(perfume.id)}
-                  className="mx-auto h-full"
-                />
-              )}
-            </div>
+            {/* Imagem do perfume - usando o componente PerfumeImage com design do hero */}
+            <PerfumeImage perfume={perfume} priority />
           </div>
         </div>
       </section>

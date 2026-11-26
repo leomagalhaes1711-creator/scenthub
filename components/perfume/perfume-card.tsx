@@ -3,6 +3,7 @@ import Link from "next/link";
 import PerfumeBottle from "@/components/perfume/perfume-bottle";
 import RatingStars from "@/components/reviews/rating-stars";
 import FavoriteButton from "@/components/perfume/favorite-button";
+import PerfumeImage from "@/components/perfume/perfume-image";
 import { getBottleVariant, getTint } from "@/lib/liquid";
 import type { Perfume } from "@/types/perfume";
 
@@ -17,48 +18,29 @@ export default function PerfumeCard({
   isLoggedIn = false,
   priority = false,
 }: PerfumeCardProps) {
-  // Background: cor do fundo da foto se houver, senão tom suave do líquido
-  const background =
-    (perfume.imageUrl && perfume.imageBackground) || getTint(perfume.liquidColor);
   const hasPhoto = Boolean(perfume.imageUrl);
 
   return (
     <article className="card-perfume">
       <Link href={`/perfumes/${perfume.id}`} className="block group" aria-label={`${perfume.name} por ${perfume.brand}`}>
-        {/* Imagem do frasco */}
-        <div className="card-perfume-image">
-          {hasPhoto ? (
-            <Image
-              src={perfume.imageUrl!}
-              alt={`Frasco do perfume ${perfume.name}`}
-              fill
-              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-              priority={priority}
-              className={`object-cover transition-opacity duration-300 ease-out group-hover:opacity-90 ${
-                perfume.imageBackground ? "" : "mix-blend-multiply"
-              }`}
-            />
-          ) : (
-            <PerfumeBottle
-              color={perfume.liquidColor}
-              variant={getBottleVariant(perfume.id)}
-              className="bottle-svg"
-            />
-          )}
+        {/* Imagem do frasco - usando o componente PerfumeImage com design do hero */}
+        <PerfumeImage
+          perfume={perfume}
+          priority={priority}
+        />
 
-          {/* Botão favorito - top right */}
-          <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <FavoriteButton perfumeId={perfume.id} isLoggedIn={isLoggedIn} />
-          </div>
-
-          {/* Badge de avaliação - bottom left */}
-          {perfume.ratingCount > 0 && (
-            <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm text-paper text-xs font-medium">
-              <RatingStars value={perfume.ratingAverage} size="xs" className="text-yellow-400" />
-              <span className="whitespace-nowrap">{perfume.ratingAverage.toFixed(1)}</span>
-            </div>
-          )}
+        {/* Botão favorito - top right */}
+        <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <FavoriteButton perfumeId={perfume.id} isLoggedIn={isLoggedIn} />
         </div>
+
+        {/* Badge de avaliação - bottom left */}
+        {perfume.ratingCount > 0 && (
+          <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm text-paper text-xs font-medium">
+            <RatingStars value={perfume.ratingAverage} size="xs" className="text-yellow-400" />
+            <span className="whitespace-nowrap">{perfume.ratingAverage.toFixed(1)}</span>
+          </div>
+        )}
 
         {/* Info do perfume */}
         <div className="card-perfume-info">

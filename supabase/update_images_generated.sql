@@ -1,5 +1,5 @@
 -- =====================================================
--- ScentHub: Atualização em lote - 2026-11-25T21:24:37.202Z
+-- ScentHub: Atualização em lote - 2026-11-26T11:37:33.254Z
 -- Gerado automaticamente a partir de public/perfumes/
 -- =====================================================
 
@@ -24,7 +24,7 @@ WHERE id = 'acqua-di-gio';
 
 UPDATE public.perfumes
 SET image_url = '/perfumes/Allure-homme.png',
-    image_bg = '#1a3a5c'
+    image_bg = '#e86c5a'
 WHERE id = 'allure-homme-sport';
 
 UPDATE public.perfumes
@@ -36,6 +36,11 @@ UPDATE public.perfumes
 SET image_url = '/perfumes/aventus.png',
     image_bg = '#1c1c1c'
 WHERE id = 'aventus';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/black-orchid.jpeg',
+    image_bg = '#1a0a1a'
+WHERE id = 'black-orchid';
 
 UPDATE public.perfumes
 SET image_url = '/perfumes/bleu-de-chanel.png',
@@ -68,6 +73,26 @@ SET image_url = '/perfumes/fahrenheit.png',
 WHERE id = 'fahrenheit';
 
 UPDATE public.perfumes
+SET image_url = '/perfumes/gentleman-boisee.jpeg',
+    image_bg = '#2d1a0a'
+WHERE id = 'gentleman-boisee';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/gentleman-givenchi.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'gentleman-givenchy';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/gentleman-reserve-privee.jpeg',
+    image_bg = '#1a0a1a'
+WHERE id = 'gentleman-reserve-privee';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/gentleman-society.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'gentleman-society';
+
+UPDATE public.perfumes
 SET image_url = '/perfumes/habit-rouge.png',
     image_bg = '#3d2a0a'
 WHERE id = 'habit-rouge';
@@ -78,9 +103,79 @@ SET image_url = '/perfumes/invictus.png',
 WHERE id = 'invictus';
 
 UPDATE public.perfumes
+SET image_url = '/perfumes/kouros.jpeg',
+    image_bg = '#2d2f36'
+WHERE id = 'kouros';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/l-homme.jpeg',
+    image_bg = '#1a3a5c'
+WHERE id = 'l-homme';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/la-nuit-de-lhomme.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'la-nuit-de-lhomme';
+
+UPDATE public.perfumes
 SET image_url = '/perfumes/le-male.png',
     image_bg = '#0d1421'
 WHERE id = 'le-male';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/luna-rossa-carbon.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'luna-rossa-carbon';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/luna-rossa-ocean.jpeg',
+    image_bg = '#0d2a4a'
+WHERE id = 'luna-rossa-ocean';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/luna-rossa-sport.jpeg',
+    image_bg = '#1a3a5c'
+WHERE id = 'luna-rossa-sport';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/myslf.jpeg',
+    image_bg = '#1a3a5c'
+WHERE id = 'myslf';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/noir-extreme.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'noir-extreme';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/ombre-leather.jpeg',
+    image_bg = '#3d1a1a'
+WHERE id = 'ombre-leather';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/oud-wood-intense.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'oud-wood-intense';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/oud-wood.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'oud-wood';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/paradigme.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'paradigme';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/pi.jpeg',
+    image_bg = '#c5a03a'
+WHERE id = 'pi';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/prada-lhomme.jpeg',
+    image_bg = '#1a1a2e'
+WHERE id = 'prada-lhomme';
 
 UPDATE public.perfumes
 SET image_url = '/perfumes/sauvage.png',
@@ -98,6 +193,11 @@ SET image_url = '/perfumes/the-one.png',
 WHERE id = 'the-one-for-men';
 
 UPDATE public.perfumes
+SET image_url = '/perfumes/tobacco-vanille.jpeg',
+    image_bg = '#2d1a0a'
+WHERE id = 'tobacco-vanille';
+
+UPDATE public.perfumes
 SET image_url = '/perfumes/ultra-male.png',
     image_bg = '#2a1a3a'
 WHERE id = 'ultra-male';
@@ -106,6 +206,11 @@ UPDATE public.perfumes
 SET image_url = '/perfumes/versace-eros.png',
     image_bg = '#0d2a4a'
 WHERE id = 'eros';
+
+UPDATE public.perfumes
+SET image_url = '/perfumes/ysl-y.jpeg',
+    image_bg = '#1a3a5c'
+WHERE id = 'ysl-y';
 
 -- =====================================================
 -- Verificar resultado

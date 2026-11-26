@@ -21,7 +21,7 @@ const PERFUME_COLORS = {
 
   // Adicionais anteriores
   '1-million.png': { id: '1-million', bg: '#c5a03a', name: '1 Million' },
-  'Allure-homme.png': { id: 'allure-homme-sport', bg: '#1a3a5c', name: 'Allure Homme Sport' },
+  'Allure-homme.png': { id: 'allure-homme-sport', bg: '#e86c5a', name: 'Allure Homme Sport' },
   'Armani-code.png': { id: 'armani-code', bg: '#15151a', name: 'Armani Code' },
   'eau-sauvage.png': { id: 'eau-sauvage', bg: '#2a3d2a', name: 'Eau Sauvage' },
   'dior-homme.png': { id: 'dior-homme', bg: '#25252a', name: 'Dior Homme' },
@@ -31,9 +31,42 @@ const PERFUME_COLORS = {
   'ultra-male.png': { id: 'ultra-male', bg: '#2a1a3a', name: 'Ultra Male' },
   'versace-eros.png': { id: 'eros', bg: '#0d2a4a', name: 'Eros' },
 
-  // ===== NOVOS PERFUMES - Adicione quantos quiser aqui =====
-  // Exemplo de como adicionar mais:
-  // 'nome-arquivo.png': { id: 'id-no-banco', bg: '#hexcolor', name: 'Nome Exibido' },
+  // ===== NOVOS PERFUMES (arquivos .jpeg) =====
+  'black-orchid.jpeg': { id: 'black-orchid', bg: '#1a0a1a', name: 'Black Orchid' },
+  'gentleman-boisee.jpeg': { id: 'gentleman-boisee', bg: '#2d1a0a', name: 'Gentleman Boisée' },
+  'gentleman-givenchi.jpeg': { id: 'gentleman-givenchy', bg: '#1a1a2e', name: 'Gentleman Givenchy' },
+  'gentleman-reserve-privee.jpeg': { id: 'gentleman-reserve-privee', bg: '#1a0a1a', name: 'Gentleman Réserve Privée' },
+  'gentleman-society.jpeg': { id: 'gentleman-society', bg: '#1a1a2e', name: 'Gentleman Society' },
+  'kouros.jpeg': { id: 'kouros', bg: '#2d2f36', name: 'Kouros' },
+  'l-homme.jpeg': { id: 'l-homme', bg: '#1a3a5c', name: "L'Homme" },
+  'la-nuit-de-lhomme.jpeg': { id: 'la-nuit-de-lhomme', bg: '#1a1a2e', name: 'La Nuit de L\'Homme' },
+  'luna-rossa-carbon.jpeg': { id: 'luna-rossa-carbon', bg: '#1a1a2e', name: 'Luna Rossa Carbon' },
+  'luna-rossa-ocean.jpeg': { id: 'luna-rossa-ocean', bg: '#0d2a4a', name: 'Luna Rossa Ocean' },
+  'luna-rossa-sport.jpeg': { id: 'luna-rossa-sport', bg: '#1a3a5c', name: 'Luna Rossa Sport' },
+  'myslf.jpeg': { id: 'myslf', bg: '#1a3a5c', name: 'MYSLF' },
+  'noir-extreme.jpeg': { id: 'noir-extreme', bg: '#1a1a2e', name: 'Noir Extreme' },
+  'ombre-leather.jpeg': { id: 'ombre-leather', bg: '#3d1a1a', name: 'Ombre Leather' },
+  'oud-wood-intense.jpeg': { id: 'oud-wood-intense', bg: '#1a1a2e', name: 'Oud Wood Intense' },
+  'oud-wood.jpeg': { id: 'oud-wood', bg: '#1a1a2e', name: 'Oud Wood' },
+  'paradigme.jpeg': { id: 'paradigme', bg: '#1a1a2e', name: 'Paradigme' },
+  'pi.jpeg': { id: 'pi', bg: '#c5a03a', name: 'Pi' },
+  'prada-lhomme.jpeg': { id: 'prada-lhomme', bg: '#1a1a2e', name: "Prada L'Homme" },
+  'tobacco-vanille.jpeg': { id: 'tobacco-vanille', bg: '#2d1a0a', name: 'Tobacco Vanille' },
+  'ultra-male.png': { id: 'ultra-male', bg: '#2a1a3a', name: 'Ultra Male' },
+  'versace-eros.png': { id: 'eros', bg: '#0d2a4a', name: 'Eros' },
+  'ysl-y.jpeg': { id: 'ysl-y', bg: '#1a3a5c', name: 'Y Eau de Parfum' },
+
+  // Adicionais anteriores
+  '1-million.png': { id: '1-million', bg: '#c5a03a', name: '1 Million' },
+  'Allure-homme.png': { id: 'allure-homme-sport', bg: '#e86c5a', name: 'Allure Homme Sport' },
+  'Armani-code.png': { id: 'armani-code', bg: '#15151a', name: 'Armani Code' },
+  'eau-sauvage.png': { id: 'eau-sauvage', bg: '#2a3d2a', name: 'Eau Sauvage' },
+  'dior-homme.png': { id: 'dior-homme', bg: '#25252a', name: 'Dior Homme' },
+  'invictus.png': { id: 'invictus', bg: '#1a3a5c', name: 'Invictus' },
+  'terre-de-hermes.png': { id: 'terre-d-hermes', bg: '#3d2a1a', name: "Terre d'Hermès" },
+  'the-one.png': { id: 'the-one-for-men', bg: '#2d1a0a', name: 'The One for Men' },
+  'ultra-male.png': { id: 'ultra-male', bg: '#2a1a3a', name: 'Ultra Male' },
+  'versace-eros.png': { id: 'eros', bg: '#0d2a4a', name: 'Eros' },
 
   // Novos sugeridos (adicione os arquivos em public/perfumes/):
   'acqua-di-gio-profumo.png': { id: 'acqua-di-gio-profumo', bg: '#0f1b2e', name: 'Acqua di Giò Profumo' },
